@@ -8,7 +8,7 @@ function App(props) {
   return (
 <div className='container'>
     <Header />
-    <Main post={props.state.profilePage.posts} dialogs={props.dialogs} message={props.message}/>
+    <Main post={props.post.posts} dialogs={props.messagesPage.dialog} message={props.messagesPage.message}/>
     </div>
   );
 }
