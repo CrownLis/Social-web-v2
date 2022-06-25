@@ -1,7 +1,0 @@
-main {
-    display: grid;
-    grid-template-columns: 15% 1fr;
-}
-.content {
-    background-color: #fff;
-}
