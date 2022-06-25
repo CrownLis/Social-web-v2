@@ -1,0 +1,70 @@
+.content {
+    background-color: rgb(136, 97, 82);
+    display: grid;
+    grid-template-areas:
+     'avatar name'
+     'avatar info'
+    'upload info'
+    'comment comment'
+    ;
+
+    grid-template-columns: 460px 1fr;
+    grid-template-rows: 120px 280px 60px 1fr;
+}
+#avatar {
+    padding: 30px;
+    grid-area: avatar;
+    max-width: 300px;
+}
+#avatar img {
+    border: 8px solid purple;
+    border-radius: 10%;
+}
+#name {
+    grid-area: name;
+    padding: 10px;
+    font-size: 46px;
+    font-weight: bold;
+}
+#upload {
+    grid-area: upload;
+    margin: 0 auto;
+}
+#upload button {
+    height: 40px;
+    width: 120px;
+    border: 0px;
+    background-color: rgb(162, 192, 29);
+}
+.info{
+    grid-area: info;
+    padding: 10px;
+}
+.info span {
+    margin: 5px;
+    display: inline-block;
+}
+.comment {
+    grid-area: comment;
+    max-width: 800px;
+    padding: 30px;
+}
+.comment textarea {
+    width: 800px;
+    max-height: 100px;
+    max-width: inherit;
+    resize: none;
+}
+
+.comment textarea:focus {
+    border: 2px solid white;
+
+}
+
+.newComment {
+    background-color: white;
+    border:2px solid black;
+    margin:10px auto;
+    max-width: 800px;
+    padding: 10px;
+}

@@ -1,0 +1,22 @@
+.sidebarLeft {
+    background-color: rgb(250, 252, 145);
+    padding: 20px;
+}
+.sidebarLeft nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebarLeft nav a{
+padding: 10px;
+text-align: center;
+text-decoration: none;
+}
+ .active{
+    color: green;
+}
+.default {
+    color: rgb(105, 25, 25);
+}
