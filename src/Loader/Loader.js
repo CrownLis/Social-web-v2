@@ -1,8 +1,8 @@
-import './Loader.css'
+import style from './Loader.module.css'
 
 const Loader = () => {
     return (
-        <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <div class={style.lds_spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     )
 }
 

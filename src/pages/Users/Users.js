@@ -4,14 +4,14 @@ import style from './Users.module.css'
 
 const Users = (props) => {
 
-  const [user, setUser] = useState([])
+  const [users, setUsers] = useState([])
 
   useEffect(() => {
     fetch(`https://jsonplaceholder.typicode.com/users`)
       .then(response => response.json())
-      .then(user => setUser(user))
+      .then(users => setUsers(users))
   }, [])
-  const userList = user.map(state => 
+  const userList = users.map(state => 
   <User name={state.name}  key={state.id}/>)
 
 

@@ -7,9 +7,11 @@ import Profile from "./pages/Profile/Profile";
 import NotFound from "./pages/NotFound/NotFound";
 import Users from "./pages/Users/Users";
 import Loader from './Loader/Loader'
+import { ACTIVE_USER_ID } from "./constants/user";
+import ActiveUserContext from "./context/ActiveUserContext";
 
 import styles from "./App.module.css";
-import { ACTIVE_USER_ID } from "./constants/user";
+
 
 
 function App(props) {
@@ -23,7 +25,10 @@ function App(props) {
       .finally(() => setIsLoading(false))
   }, [])
 
+  const ActiveUserContextValue = {activeUser};
+
   return (
+    <ActiveUserContext.Provider value={{ActiveUserContextValue}}>
     <div className="container">
       <Header />
       <BrowserRouter>
@@ -32,7 +37,7 @@ function App(props) {
           <div className={styles.content}>
             {isLoading ? <Loader /> :
               <Routes>
-                <Route path="/profile" element={<Profile user={activeUser} />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/users" element={<Users />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
@@ -41,6 +46,7 @@ function App(props) {
         </main>
       </BrowserRouter>
     </div>
+    </ActiveUserContext.Provider>
   );
 }
 
