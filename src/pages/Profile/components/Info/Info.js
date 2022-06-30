@@ -1,4 +1,4 @@
-import React,{useContext} from "react";
+import React, { useContext } from "react";
 
 import ActiveUserContext from "../../../../context/ActiveUserContext";
 
@@ -6,17 +6,17 @@ import styles from "./Info.module.css";
 
 const Info = () => {
 
-  const {ActiveUserContextValue} = useContext(ActiveUserContext)
+  const { activeUser } = useContext(ActiveUserContext)
 
   return (
     <div className={styles.info}>
       <h2>About me</h2>
-      <span>Phone: {ActiveUserContextValue.activeUser.phone}</span> <br></br>
-      <span>Email: {ActiveUserContextValue.activeUser.email}</span>
+      <span>Phone: {activeUser.phone}</span> <br></br>
+      <span>Email: {activeUser.email}</span>
       <br></br>
-      <span>Nickname: {ActiveUserContextValue.activeUser.username}</span>
+      <span>Nickname: {activeUser.username}</span>
       <br></br>
-      <span>City: {ActiveUserContextValue.activeUser.city} </span>
+      <span>City: {activeUser.address.city} </span>
     </div>
   );
 };
