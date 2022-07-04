@@ -16,27 +16,26 @@ const Profile = () => {
     setIsLoading(false)
   }
 
-useEffect ( () => {fetchUsers()})
+  useEffect(() => { fetchUsers() })
 
-const [posts,setPosts] = useState()
-const [isLoading,setIsLoading] = useState(true)
-
+  const [posts, setPosts] = useState()
+  const [isLoading, setIsLoading] = useState(true)
   const { activeUser } = useContext(ActiveUserContext)
-console.log(posts)
+
   return (
     <div className={styles.container}>
-     {isLoading? <Loader />:
-    <div className={styles.content}>
-      <div className={styles.avatar}>
-        <img src="" alt="my avatar"></img>
-      </div>
-      <div className={styles.name}>{activeUser.name}</div>
-      <Info />
-      <div className={styles.posts}>
-      <Posts post={posts}/>
-      </div>
-    </div>
-     }
+      {isLoading ? <Loader /> :
+        <div className={styles.content}>
+          <div className={styles.avatar}>
+            <img src="" alt="my avatar"></img>
+          </div>
+          <div className={styles.name}>{activeUser.name}</div>
+          <Info />
+          <div className={styles.posts}>
+            <Posts post={posts} />
+          </div>
+        </div>
+      }
     </div>
   );
 };

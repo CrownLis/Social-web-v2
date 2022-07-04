@@ -49,7 +49,7 @@ function App(props) {
                   {
                     anotherUsers.map
                       (state =>
-                        <Route path={`/users/${state.id}`} element={<UserProfile name={state.name} email ={state.email} phone = {state.phone} city = {state.address.city} id={state.id}/>} />
+                        <Route path={`/users/${state.id}`} element={<UserProfile  name={state.name} email ={state.email} phone = {state.phone} city = {state.address.city} id={state.id}/>} />
                       )}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
