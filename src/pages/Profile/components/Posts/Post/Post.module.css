@@ -8,7 +8,11 @@
     display: grid;
     grid-template-columns: 9fr 1fr;
 }
+.post:hover .remove {
+display: block;
+}
 .remove {
+    display:none;
     background-color: #fff;
     max-width: 120px;
     max-height: 30px;
@@ -21,5 +25,5 @@
       cursor: pointer;
       border:2px solid black;
       font-weight: bold;
-      color:rgba(255, 0, 0, 0.692)
+      color:rgba(255, 0, 0, 0.692);
     }
