@@ -2,14 +2,6 @@
   display: flex;
   flex-direction: column;
 }
-.post {
-    border: 2px solid black;
-    margin: 5px;
-    padding:10px;
-    border-radius: 10px;
-    background-color: rgb(107, 41, 128);
-    font-size: 18px;
-}
 .newPost {
   margin: 10px;
   font-size: 18px;
@@ -28,7 +20,7 @@
   outline: 0;
   outline-offset: 0;
 }
-.newPost button {
+.add {
   max-width: 120px;
   max-height: 40px;
   margin: 10px;
@@ -38,4 +30,10 @@ border: 2px solid rgb(133, 22, 133);
 background-color: transparent;
 border-radius: 6px;
 cursor: pointer;
+}
+
+.newPost span, h4{
+  margin: 10px;
+  font-size: 18px;
+  font-weight: bold;
 }

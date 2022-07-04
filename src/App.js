@@ -36,28 +36,29 @@ function App(props) {
   const ActiveUserContextValue = { activeUser };
   return (
     <ActiveUserContext.Provider value={ActiveUserContextValue}>
-      <div className="container">
-        <Header />
-        <BrowserRouter>
+      <BrowserRouter>
+        <div className="container">
+          <Header />
           <main className={styles.main}>
             <Sidebar />
             <div className={styles.content}>
               {isLoading ? <Loader /> :
                 <Routes>
+                  <Route path="/main" />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/users" element={<Users />} />
                   {
                     anotherUsers.map
                       (state =>
-                        <Route path={`/users/${state.id}`} element={<UserProfile  name={state.name} email ={state.email} phone = {state.phone} city = {state.address.city} id={state.id}/>} />
+                        <Route path={`/users/${state.id}`} element={<UserProfile name={state.name} email={state.email} phone={state.phone} city={state.address.city} id={state.id} />} />
                       )}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               }
             </div>
           </main>
-        </BrowserRouter>
-      </div>
+        </div>
+      </BrowserRouter>
     </ActiveUserContext.Provider>
   );
 }

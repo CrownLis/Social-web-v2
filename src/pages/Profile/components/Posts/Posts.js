@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Post from "./Post/Post";
 
 import styles from "./Posts.module.css";
 
@@ -8,9 +9,14 @@ import styles from "./Posts.module.css";
 
 const Posts = (props) => {
 
+  const removePost = (posts) => {
+    setPost(post.filter(p => p.id !== posts.id))
+    console.log(posts)
+  }
+
   const [post, setPost] = useState((props.post))
-  console.log(post)
   const [title, setTitle] = useState('')
+
   const addNewPost = (e) => {
     e.preventDefault()
     const newPost = {
@@ -27,15 +33,15 @@ const Posts = (props) => {
       <h2>Посты</h2>
       {post.body}
       <div className={styles.newPost}>
-        Добавить пост
-        {(post).map(post => <div className={styles.post} key={post.id}>Name: {post.body}</div>)}
+      {post == 0 ? <h4>Посты отсутсвуют</h4> : post.map(p => <Post post={p} remove={removePost} />)}
+        <span>Добавить пост</span>
         <textarea
           placeholder="Введите комментарий"
           maxLength={600} type='text'
           value={title}
           onChange={e => setTitle(e.target.value)}
         />
-        <button onClick={addNewPost}>Добавить</button>
+        <button className={styles.add} onClick={addNewPost}>Добавить</button>
       </div>
     </div>
   );
