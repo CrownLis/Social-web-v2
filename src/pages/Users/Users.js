@@ -24,20 +24,20 @@ const Users = (props) => {
   }, [])
 
 
-  
+
   return (
-    
+
     <div className={style.userList}>
-     {isLoading? <Loader/> : 
-     <div>
-     <h2>Список пользователей</h2>
-      {
-        users.map(state => 
-  <NavLink key={state.id} to={`/users/${state.id}`} className={style.user}>
-    <User name={state.name} />
-  </NavLink>
-)}
-      </div>}
+      {isLoading ? <Loader /> :
+        <div>
+          <h2>Список пользователей</h2>
+          {
+            users.map(state =>
+              <NavLink key={state.id} to={`/users/${state.id}`} className={style.user}>
+                <User name={state.name} />
+              </NavLink>
+            )}
+        </div>}
     </div>
   );
 };
