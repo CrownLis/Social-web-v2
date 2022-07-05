@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import { useState } from "react";
 import Post from "./Post/Post";
 

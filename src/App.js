@@ -12,12 +12,14 @@ import ActiveUserContext from "./context/ActiveUserContext";
 
 import styles from "./App.module.css";
 import UserProfile from "./pages/UserProfile/UserProfile";
+import SignIn from "./pages/SignIn/SignIn";
+import SignUp from "./pages/SignUp/SignUp";
 
 
 
 function App(props) {
 
-  const [activeUser, setUser] = useState(null)
+  const [activeUser, setUser] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [anotherUsers, setAnotherUsers] = useState()
 
@@ -53,6 +55,8 @@ function App(props) {
                         <Route path={`/users/${state.id}`} element={<UserProfile name={state.name} email={state.email} phone={state.phone} city={state.address.city} id={state.id} />} />
                       )}
                   <Route path="*" element={<NotFound />} />
+                  <Route path="signIn" element={<SignIn />}/>
+                  <Route path='signUp' element={<SignUp />} />
                 </Routes>
               }
             </div>

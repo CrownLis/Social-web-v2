@@ -10,7 +10,7 @@ const Header = () => {
       <NavLink to='/main'><img src={Pineapple} alt="pineapple" className={styles.logotype}></img></NavLink>
       <h1>Ananasoviy Sok</h1>
       </div>
-      <button className={styles.signIn}>Sign in</button>
+      <NavLink to='signIn' className={styles.btn}><button className={styles.signIn}>Sign in</button></NavLink>
     </div>
   );
 };
