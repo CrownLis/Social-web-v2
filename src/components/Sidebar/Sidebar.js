@@ -22,6 +22,14 @@ const Sidebar = (props) => {
         >
           Пользователи
         </NavLink>
+        <NavLink
+          to="/message"
+          className={(navData) =>
+            navData.isActive ? styles.active : styles.default
+          }
+        >
+          Сообщения
+        </NavLink>
       </nav>
     </div>
   );

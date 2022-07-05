@@ -1,0 +1,30 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin:40px auto;
+}
+.container label {
+    font-size: 24px;
+    color:purple;
+    padding: 5px;
+}
+.container input {
+    outline: 0px;
+    padding: 5px;
+    font-size: 18px;
+}
+.btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.btn button {
+    padding: 5px;
+    margin: 10px;
+    color: purple;
+    border:2px solid purple;
+    font-size:16px;
+    border-radius: 5px;
+    cursor: pointer;
+}

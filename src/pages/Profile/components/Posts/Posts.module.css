@@ -1,3 +1,39 @@
 .posts {
-  
+  display: flex;
+  flex-direction: column;
+}
+.newPost {
+  margin: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+}
+.newPost textarea {
+  padding: 2px;
+  margin:10px;
+  resize:none;
+  height: 120px;
+  font-size: 18px;
+}
+:active, :hover, :focus {
+  outline: 0;
+  outline-offset: 0;
+}
+.add {
+  max-width: 120px;
+  max-height: 40px;
+  margin: 10px;
+font-size: 18px;
+padding:4px;
+border: 2px solid rgb(133, 22, 133);
+background-color: transparent;
+border-radius: 6px;
+cursor: pointer;
+}
+
+.newPost span, h4{
+  margin: 10px;
+  font-size: 18px;
+  font-weight: bold;
 }

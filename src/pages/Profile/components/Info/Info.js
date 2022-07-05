@@ -1,15 +1,22 @@
+import React, { useContext } from "react";
+
+import ActiveUserContext from "../../../../context/ActiveUserContext";
+
 import styles from "./Info.module.css";
 
-const Info = (props) => {
+const Info = () => {
+
+  const { activeUser } = useContext(ActiveUserContext)
+
   return (
     <div className={styles.info}>
-      <h2>Обо мне</h2>
-      <span>Возраст: {props.age}</span> <br></br>
-      <span>Увлечение: {props.lovely}</span>
+      <h2>About me</h2>
+      <span>Phone: {activeUser.phone}</span> <br></br>
+      <span>Email: {activeUser.email}</span>
       <br></br>
-      <span>Качества: {props.quality}</span>
+      <span>Nickname: {activeUser.username}</span>
       <br></br>
-      <span>Город: {props.locate} </span>
+      <span>City: {activeUser.address.city} </span>
     </div>
   );
 };

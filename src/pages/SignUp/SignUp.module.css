@@ -1,0 +1,39 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    margin: 40px auto;
+    text-align: center;
+}
+.container label {
+    font-size: 24px;
+    color:purple;
+    padding: 5px;
+}
+.container input {
+    outline: 0px;
+    padding: 5px;
+    font-size: 18px;
+}
+.underline {
+    text-decoration: underline;
+}
+.checkbox {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.checkbox input {
+    width: 25px;
+    height: 25px;
+}
+.container button{
+    padding: 5px;
+    margin: 10px;
+    color: purple;
+    border:2px solid purple;
+    font-size:16px;
+    border-radius: 5px;
+    cursor: pointer;
+}

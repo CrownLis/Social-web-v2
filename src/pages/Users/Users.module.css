@@ -1,0 +1,17 @@
+.users {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+}
+.user {
+   text-decoration: none;
+   font-size: 18px;
+}
+h2 {
+   padding-left: 20px;
+}
+.userList {
+   width: 100%;
+display: flex;
+flex-direction: column;
+}
