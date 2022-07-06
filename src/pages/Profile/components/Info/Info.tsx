@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React, { FC, useContext } from "react";
 
 import ActiveUserContext from "../../../../context/ActiveUserContext";
 
 import styles from "./Info.module.css";
 
-const Info = () => {
+const Info:FC = () => {
 
   const { activeUser } = useContext(ActiveUserContext)
 
@@ -13,8 +13,6 @@ const Info = () => {
       <h2>About me</h2>
       <span>Phone: {activeUser.phone}</span> <br></br>
       <span>Email: {activeUser.email}</span>
-      <br></br>
-      <span>Nickname: {activeUser.username}</span>
       <br></br>
       <span>City: {activeUser.address.city} </span>
     </div>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 
 import Posts from "./components/Posts/Posts";
 import Info from "./components/Info/Info";
@@ -6,19 +6,22 @@ import ActiveUserContext from "../../context/ActiveUserContext";
 
 import styles from "./Profile.module.css";
 import Loader from "../../Loader/Loader";
+import axios from "axios";
+import { IPosts } from "../../type/types";
 
-const Profile = () => {
+const Profile:FC= () => {
+
 
   const fetchUsers = async () => {
-    const response = await fetch(`https://jsonplaceholder.typicode.com/posts?_limit=5`);
-    const posts = await response.json();
+    const response = await axios.get<IPosts[]>(`https://jsonplaceholder.typicode.com/posts?_limit=5`);
+    const posts = await response.data;
     setPosts(posts);
     setIsLoading(false)
   }
 
   useEffect(() => { fetchUsers() })
 
-  const [posts, setPosts] = useState()
+  const [posts, setPosts] = useState<IPosts[]>()
   const [isLoading, setIsLoading] = useState(true)
   const { activeUser } = useContext(ActiveUserContext)
 
@@ -32,7 +35,7 @@ const Profile = () => {
           <div className={styles.name}>{activeUser.name}</div>
           <Info />
           <div className={styles.posts}>
-            <Posts post={posts} />
+            <Posts posts={posts!}/>
           </div>
         </div>
       }

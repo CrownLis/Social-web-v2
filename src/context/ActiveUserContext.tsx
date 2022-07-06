@@ -1,5 +1,5 @@
 import React from "react";
 
-const ActiveUserContext = React.createContext(null)
+const ActiveUserContext:any = React.createContext(false)
 
 export default ActiveUserContext 

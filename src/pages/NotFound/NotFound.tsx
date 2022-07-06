@@ -1,4 +1,6 @@
-const NotFound = (props) => {
+import { FC } from "react";
+
+const NotFound:FC = () => {
   return (
     <div>
       <h2>Страница не найдена!</h2>

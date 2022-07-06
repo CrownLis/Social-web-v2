@@ -1,21 +1,22 @@
-import { useEffect, useState } from "react";
-import { NavLink, Route, Routes } from "react-router-dom";
+import { FC, useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
+import axios from "axios";
 
 import User from "./User/User";
 import Loader from "../../Loader/Loader";
-import { ACTIVE_USER_ID } from "../../constants/user";
+import { IUser } from "../../type/types";
 
 import style from './Users.module.css'
 
-const Users = (props) => {
+const Users:FC= () => {
 
-  const [users, setUsers] = useState(null);
+  const [users, setUsers] = useState<IUser[]>([]);
 
   const [isLoading, setIsLoading] = useState(true)
 
   const fetchUsers = async () => {
-    const response = await fetch(`https://jsonplaceholder.typicode.com/users`);
-    const userData = await response.json();
+    const response = await axios.get<IUser[]>(`https://jsonplaceholder.typicode.com/users`);
+    const userData = await response.data;
     setUsers(userData);
     setIsLoading(false)
   }
