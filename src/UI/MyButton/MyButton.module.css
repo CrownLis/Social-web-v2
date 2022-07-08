@@ -1,0 +1,10 @@
+.primary {
+background-color: rgb(245, 245, 245);
+color: purple;
+border-color: rgb(82, 50, 92);
+}
+.primary:hover {
+    background-color: rgb(82, 50, 92);
+    border-color: white;
+    font-weight: bold;
+}

@@ -1,11 +1,11 @@
 import { FC } from 'react'
 import style from './User.module.css'
 
-interface UserListName {
+interface UserProps {
     name:string
 }
 
-const User:FC<UserListName> = (name) => {
+const User:FC<UserProps> = (name) => {
     return (
     <div className={style.user}>
      <span>Имя: {name.name}</span>

@@ -5,7 +5,7 @@ import Info from "./components/Info/Info";
 import ActiveUserContext from "../../context/ActiveUserContext";
 
 import styles from "./Profile.module.css";
-import Loader from "../../Loader/Loader";
+import Loader from "../Loader/Loader";
 import axios from "axios";
 import { IPosts } from "../../type/types";
 
@@ -14,14 +14,14 @@ const Profile:FC= () => {
 
   const fetchUsers = async () => {
     const response = await axios.get<IPosts[]>(`https://jsonplaceholder.typicode.com/posts?_limit=5`);
-    const posts = await response.data;
+    const posts = response.data;
     setPosts(posts);
     setIsLoading(false)
   }
 
   useEffect(() => { fetchUsers() })
 
-  const [posts, setPosts] = useState<IPosts[]>()
+  const [posts, setPosts] = useState<IPosts[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const { activeUser } = useContext(ActiveUserContext)
 

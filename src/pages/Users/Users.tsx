@@ -1,12 +1,22 @@
 import { FC, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
+import { Table } from "antd";
 
 import User from "./User/User";
-import Loader from "../../Loader/Loader";
+import Loader from "../Loader/Loader";
 import { IUser } from "../../type/types";
 
 import style from './Users.module.css'
+
+const columns:[items:{}] = [
+{
+title: 'Name',
+dataIndex:'name',
+key:'name'
+}
+
+]
 
 const Users:FC= () => {
 
@@ -16,7 +26,7 @@ const Users:FC= () => {
 
   const fetchUsers = async () => {
     const response = await axios.get<IUser[]>(`https://jsonplaceholder.typicode.com/users`);
-    const userData = await response.data;
+    const userData = response.data;
     setUsers(userData);
     setIsLoading(false)
   }

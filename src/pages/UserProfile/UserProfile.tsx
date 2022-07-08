@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 
 import UsersInfo from './UsersInfo/UsersInfo';
 import Posts from '../Profile/components/Posts/Posts';
-import Loader from '../../Loader/Loader';
+import Loader from '../Loader/Loader';
 
 import style from './UserProfile.module.css'
 import axios from 'axios';
@@ -14,12 +14,14 @@ const UserProfile:FC<IUser>= ({name,phone,email,address,id}) => {
 
     const fetchUsers = async () => {
         const response = await axios.get<IPosts[]>(`https://jsonplaceholder.typicode.com/posts?_start=${id}&_limit=5`);
-        const posts = await response.data;
+        const posts = response.data;
         setPosts(posts);
         setIsLoading(false)
       }
     
-    useEffect ( () => {fetchUsers()})
+    useEffect ( () => {
+      fetchUsers()
+    }, [])
     
     const [posts,setPosts] = useState<IPosts[]>()
     const [isLoading,setIsLoading] = useState(true)

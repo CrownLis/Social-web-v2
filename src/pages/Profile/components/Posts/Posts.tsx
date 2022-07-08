@@ -7,11 +7,11 @@ import Post from "./Post/Post";
 import styles from "./Posts.module.css";
 
 
-interface IPostProps {
+interface IPostsProps {
   posts:IPosts[];
 }
 
-const Posts:FC<IPostProps> = (posts) => {
+const Posts:FC<IPostsProps> = (posts) => {
   const [post, setPost] = useState(posts.posts)
   const [title, setTitle] = useState('')
 console.log(post)
