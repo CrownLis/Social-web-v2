@@ -1,19 +1,18 @@
 export interface IAdress {
-    city:string
+  city: string;
 }
 
 export interface IUser {
-    id: number;
-    name:string;
-    email:string
-    address: IAdress;
-    phone:number
-  }
+  id: number;
+  name: string;
+  email: string;
+  address: IAdress;
+  phone: number;
+}
 
- export interface IPosts {
-    id:number;
-    userId?:number;
-    title?:string;
-    body:string;
-    onClick: (id:number) => void
-  }
+export interface IPost {
+  id: number;
+  userId?: number;
+  title?: string;
+  body: string;
+}

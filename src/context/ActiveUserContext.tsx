@@ -1,5 +1,13 @@
-import React from "react";
+import React from 'react';
 
-const ActiveUserContext:any = React.createContext(false)
+import { IUser } from '../type/types';
 
-export default ActiveUserContext 
+interface ActiveUserContext {
+  activeUser: IUser | null;
+}
+
+const ActiveUserContext = React.createContext<ActiveUserContext>({
+  activeUser: null,
+});
+
+export default ActiveUserContext;

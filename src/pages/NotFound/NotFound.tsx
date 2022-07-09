@@ -1,6 +1,6 @@
-import { FC } from "react";
+import { FC } from 'react';
 
-const NotFound:FC = () => {
+const NotFound: FC = () => {
   return (
     <div>
       <h2>Страница не найдена!</h2>

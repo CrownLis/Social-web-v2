@@ -1,14 +1,18 @@
-import { Button } from 'antd';
-import React, { FC } from 'react';
+import { Button, ButtonProps } from 'antd';
+import React, { FC, PropsWithChildren } from 'react';
 
-import style from './MyButton.module.css'
+import style from './MyButton.module.css';
 
-const MyButton:FC = () => {
-    return (
-        <Button type="primary" shape="round" size='large' className={style.primary}>
-          Sign In
-          </Button>
-    )
-}
+type MyButtonProps = PropsWithChildren<{
+  type?: ButtonProps['type'];
+}>;
 
-export default MyButton
+const MyButton: FC<MyButtonProps> = ({ children, type = 'primary' }) => {
+  return (
+    <Button type={type} shape="round" size="large" className={style.primary}>
+      {children}
+    </Button>
+  );
+};
+
+export default MyButton;

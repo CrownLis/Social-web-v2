@@ -1,17 +1,21 @@
-import { FC } from "react";
-import { NavLink } from "react-router-dom";
-import Pineapple from "../../assets/images/pineapple.png";
-import MyButton from "../../UI/MyButton/MyButton";
+import { FC } from 'react';
+import { NavLink } from 'react-router-dom';
 
-import styles from "./MyHeader.module.css";
+import Pineapple from '../../assets/images/pineapple.png';
+import MyButton from '../../UI/MyButton/MyButton';
 
-const MyHeader:FC = () => {
+import styles from './MyHeader.module.css';
+
+const MyHeader: FC = () => {
   return (
     <div className={styles.header}>
-      <NavLink to='/main' className={styles.logo}><img src={Pineapple} alt="pineapple" className={styles.logotype}></img>
-      <h1>Ananasoviy Sok</h1>
+      <NavLink to="/main" className={styles.logo}>
+        <img src={Pineapple} alt="pineapple" className={styles.logotype}></img>
+        <h1>Ananasoviy Sok</h1>
       </NavLink>
-      <NavLink to='signIn' className={styles.btn}><MyButton/></NavLink>
+      <NavLink to="signIn" className={styles.btn}>
+        <MyButton>Sign In</MyButton>
+      </NavLink>
     </div>
   );
 };

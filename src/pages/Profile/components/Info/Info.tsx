@@ -1,20 +1,19 @@
-import React, { FC, useContext } from "react";
+import React, { FC, useContext } from 'react';
 
-import ActiveUserContext from "../../../../context/ActiveUserContext";
+import ActiveUserContext from '../../../../context/ActiveUserContext';
 
-import styles from "./Info.module.css";
+import styles from './Info.module.css';
 
-const Info:FC = () => {
-
-  const { activeUser } = useContext(ActiveUserContext)
+const Info: FC = () => {
+  const { activeUser } = useContext(ActiveUserContext);
 
   return (
     <div className={styles.info}>
       <h2>About me</h2>
-      <span>Phone: {activeUser.phone}</span> <br></br>
-      <span>Email: {activeUser.email}</span>
+      <span>Phone: {activeUser?.phone}</span> <br></br>
+      <span>Email: {activeUser?.email}</span>
       <br></br>
-      <span>City: {activeUser.address.city} </span>
+      <span>City: {activeUser?.address.city} </span>
     </div>
   );
 };

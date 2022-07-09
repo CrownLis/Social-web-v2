@@ -1,9 +1,7 @@
-import style from './SidebarNavigation.module.css'
+import style from './SidebarNavigation.module.css';
 
 const SidebarNavigation = () => {
-    return (
-        <div></div>
-    )
-}
+  return <div></div>;
+};
 
-export default SidebarNavigation
+export default SidebarNavigation;
