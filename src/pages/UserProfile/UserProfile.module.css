@@ -4,7 +4,6 @@
 }
 
 .content {
-    background-color: rgb(136, 97, 82);
     display: grid;
     grid-template-areas:
       "avatar name"
