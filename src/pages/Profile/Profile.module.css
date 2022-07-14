@@ -19,6 +19,7 @@
 .avatar img {
   border: 8px solid purple;
   border-radius: 10%;
+  max-width: inherit;
 }
 
 .name {

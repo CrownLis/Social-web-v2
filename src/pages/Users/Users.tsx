@@ -1,34 +1,28 @@
-import { FC, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import axios from 'axios';
-import { Table } from 'antd';
+import { FC, useContext, useEffect, useState } from 'react';
+import { Avatar, List, Skeleton } from 'antd';
 
-import User from './User/User';
 import Loader from '../Loader/Loader';
 import { IUser } from '../../type/types';
 
 import style from './Users.module.css';
-
-const columns: [items: {}] = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-  },
-];
+import { getUsers } from '../../API/socialWeb';
+import MyButton from '../../UI/MyButton/MyButton';
+import { NavLink } from 'react-router-dom';
+import ActiveUserContext from '../../context/ActiveUserContext';
 
 const Users: FC = () => {
+  const {activeUser} = useContext(ActiveUserContext);
   const [users, setUsers] = useState<IUser[]>([]);
-
+  const [initLoading, setInitLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchUsers = async () => {
-    const response = await axios.get<IUser[]>(
-      `https://jsonplaceholder.typicode.com/users`,
-    );
-    const userData = response.data;
-    setUsers(userData);
+    const usersList = await getUsers();
+    const userListWithoutActive = usersList.data.filter((user: { id: number | undefined; }) =>  user.id != activeUser?.id)
+    setUsers(userListWithoutActive);
     setIsLoading(false);
+    setInitLoading(false);
+    console.log(usersList)
   };
   useEffect(() => {
     fetchUsers();
@@ -40,16 +34,34 @@ const Users: FC = () => {
         <Loader />
       ) : (
         <div>
-          <h2>Список пользователей</h2>
-          {users.map(state => (
-            <NavLink key={state.id} to={`/users/${state.id}`} className={style.user}>
-              <User name={state.name} />
-            </NavLink>
-          ))}
+          <List
+            className="demo-loadmore-list"
+            loading={initLoading}
+            itemLayout="horizontal"
+            dataSource={users}
+            size= 'large'
+            renderItem={item => (
+              <List.Item
+              >
+                <Skeleton avatar title={false} loading={item.loading} active >
+                  <List.Item.Meta className={style.title}
+                    avatar={<Avatar src={item.avatar} className={style.avatar}/>}
+                    title = {<NavLink to={`/users/${item.id}`} > {`${item.firstName} ${item.lastName}`}</NavLink>}
+                  />
+                  <div>
+                    <MyButton>
+                      Добавить в друзья
+                    </MyButton>
+                  </div>
+                </Skeleton>
+              </List.Item>
+            )}
+          />
         </div>
-      )}
+      )
+      }
     </div>
-  );
+  )
 };
 
 export default Users;

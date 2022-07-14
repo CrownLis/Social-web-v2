@@ -3,16 +3,16 @@ export interface IAdress {
 }
 
 export interface IUser {
-  id: number;
-  name: string;
-  email: string;
-  address: IAdress;
-  phone: number;
+  loading?: boolean | undefined;
+  id: number | undefined;
+  firstName: string | undefined;
+  lastName: string | undefined;
+  email: string | undefined;
+  avatar: string | undefined;
 }
 
 export interface IPost {
   id: number;
   userId?: number;
-  title?: string;
-  body: string;
+  text:string
 }

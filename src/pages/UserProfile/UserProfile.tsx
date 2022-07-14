@@ -5,27 +5,29 @@ import Posts from '../Profile/components/Posts/Posts';
 import Loader from '../Loader/Loader';
 
 import style from './UserProfile.module.css';
-import axios from 'axios';
 import { IPost, IUser } from '../../type/types';
+import { getPosts, getUser } from '../../API/socialWeb';
+import { useParams } from 'react-router-dom';
 
-interface UserProfileProps extends IUser {}
+const UserProfile: FC = () => {
+  const { id } = useParams()
 
-const UserProfile: FC<UserProfileProps> = ({ name, phone, email, address, id }) => {
   const [posts, setPosts] = useState<IPost[]>([]);
+  const [user,setUser] = useState<IUser>()
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchUsers = async () => {
-    const response = await axios.get<IPost[]>(
-      `https://jsonplaceholder.typicode.com/posts?_start=${id}&_limit=5`,
-    );
-    const posts = response.data;
-    setPosts(posts);
+  const fetchUser = async (userId:string) => {
+    const activeUser = await getUser(userId);
+    setUser(activeUser.data);
+    const postList = await getPosts(userId);
+    setPosts(postList.data);
     setIsLoading(false);
-  };
+  }
+
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+   if (id) { fetchUser(id)};
+  }, [id]);
 
   return (
     <div className={style.container}>
@@ -34,10 +36,10 @@ const UserProfile: FC<UserProfileProps> = ({ name, phone, email, address, id }) 
       ) : (
         <div className={style.content}>
           <div className={style.avatar}>
-            <img src="" alt={name}></img>
+            <img src={user?.avatar} alt={user?.avatar}></img>
           </div>
-          <div className={style.name}>{name}</div>
-          <UsersInfo name={name} phone={phone} email={email} address={address} id={id} />
+          <div className={style.name}>{`${user?.firstName} ${user?.lastName}`}</div>
+          <UsersInfo firstName={user?.firstName} lastName={user?.lastName} email={user?.email} avatar={user?.avatar} id={user?.id} />
           <div className={style.posts}>
             <Posts posts={posts} />
           </div>

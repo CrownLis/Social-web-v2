@@ -1,7 +1,11 @@
 /* eslint-disable eqeqeq */
-import { FC, useState } from 'react';
+import { Form } from 'antd';
+import TextArea from 'antd/lib/input/TextArea';
+import { FC, useEffect, useState } from 'react';
+import { addPost, deletePost } from '../../../../API/socialWeb';
 
 import { IPost } from '../../../../type/types';
+import MyButton from '../../../../UI/MyButton/MyButton';
 import Post from './Post/Post';
 
 import styles from './Posts.module.css';
@@ -12,22 +16,18 @@ interface PostsProps {
 
 const Posts: FC<PostsProps> = ({ posts: externalPosts }) => {
   const [posts, setPosts] = useState(externalPosts);
-  const [title, setTitle] = useState('');
-
-  const removePost = (id: number) => {
+  console.log(posts)
+  const removePost = async (id: number) => {
+    await deletePost(id);
     setPosts(posts.filter(p => p.id !== id));
   };
 
-  const addNewPost = (e: any) => {
-    e.preventDefault();
-    const newPost = {
-      id: posts.length + 1,
-      name: 'name',
-      body: title,
-    };
-    setPosts([...posts, newPost]);
-    setTitle('');
+  const addNewPost = async (values:{}) => {
+    await addPost(values)
   };
+
+  useEffect(() => {
+  }, [])
 
   return (
     <div className={styles.posts}>
@@ -40,23 +40,26 @@ const Posts: FC<PostsProps> = ({ posts: externalPosts }) => {
           posts.map(p => (
             <Post
               id={p.id}
-              body={p.body}
-              title={p.title}
+              text={p.text}
               userId={p.userId}
               onClick={removePost}
             />
           ))
         )}
         <span>Добавить пост</span>
-        <textarea
-          placeholder="Введите комментарий"
-          maxLength={600}
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-        />
-        <button className={styles.add} onClick={addNewPost}>
-          Добавить
-        </button>
+        <Form
+        onFinish={addNewPost}
+        >
+          <Form.Item 
+          name='text'>
+        <TextArea />
+      </Form.Item>
+      <Form.Item wrapperCol={{ offset: 8, span: 16 }} className={styles.btn}>
+        <MyButton type="primary" htmlType="submit">
+          Submit
+        </MyButton>
+      </Form.Item>
+        </Form>
       </div>
     </div>
   );

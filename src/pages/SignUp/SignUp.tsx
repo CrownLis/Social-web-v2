@@ -1,30 +1,86 @@
-import { FC } from 'react';
+import { Button, Checkbox, Form, Input } from 'antd';
+import axios from 'axios';
+import React, { FC } from 'react';
+import socialWebApi, { signUp } from '../../API/socialWeb';
+import  { useNavigate } from 'react-router-dom'
 
 import style from './SignUp.module.css';
+import MyButton from '../../UI/MyButton/MyButton';
 
 const SignUp: FC = () => {
+
+const navigation = useNavigate()
+
+  const onFinish = async (values: {}) => {
+    await signUp(values)
+    navigation('/signIn')
+    
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+  };
+
   return (
-    <div>
-      <form className={style.container}>
-        <label htmlFor="name">Name</label>
-        <input type="text" id="name" name="name" />
-        <label htmlFor="secondName">Second name</label>
-        <input type="text" id="secondName" />
-        <label htmlFor="email">Email</label>
-        <input type="text" id="email" />
-        <label htmlFor="password">Password</label>
-        <input type="text" id="password" />
-        <label htmlFor="confirm">Confirm password</label>
-        <input type="text" id="confirm" />
-        <div className={style.checkbox}>
-          <label htmlFor="checkbox">
-            I agree<span className={style.underline}> to the privacy policy</span>
-          </label>
-          <input type="checkbox" id="checkbox" />
-        </div>
-        <button type="submit">Sign Up</button>
-      </form>
-    </div>
+    <Form
+    className={style.container}
+      name="basic"
+      labelCol={{ span: 8 }}
+      wrapperCol={{ span: 16 }}
+      initialValues={{ remember: true }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      autoComplete="off"
+    >
+      <Form.Item
+        label="Email"
+        name="email"
+        rules={[{ required: true, message: 'Please input your email!' },
+        { type: 'email' }
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Password"
+        name="password"
+        rules={[{ required: true, message: 'Please input your password!' }]}
+      >
+        <Input.Password />
+      </Form.Item>
+
+      <Form.Item
+        label="FirstName"
+        name="firstName"
+        rules={[{ required: true, message: 'Please input your firstName!' }]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="LastName"
+        name="lastName"
+        rules={[{ required: true, message: 'Please input your lastName!' }]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Avatar"
+        name="avatar"
+        rules={[{ required: false }]}
+      >
+        <Input />
+      </Form.Item>
+
+
+      <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+        <MyButton type="primary" htmlType="submit">
+          Submit
+        </MyButton>
+      </Form.Item>
+    </Form>
   );
 };
 

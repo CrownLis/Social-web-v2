@@ -37,3 +37,9 @@ cursor: pointer;
   font-size: 18px;
   font-weight: bold;
 }
+:global(.ant-form-item).btn button {
+  align-items: center;
+  justify-self: center;
+  color: white;
+  padding: 0px 10px;
+}

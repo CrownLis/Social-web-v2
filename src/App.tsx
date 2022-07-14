@@ -20,29 +20,29 @@ import styles from './App.module.css';
 import 'antd/dist/antd.css';
 import './assets/styles/core.css';
 import MyHeader from './components/Header/MyHeader';
+import { authMe, getUsers } from './API/socialWeb';
 
 const App: FC = () => {
   const { Header, Content, Sider } = Layout;
 
   const [activeUser, setActiveUser] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [anotherUsers, setAnotherUsers] = useState<IUser[]>();
 
-  const fetchUsers = async () => {
-    const response = await axios.get<IUser[]>(
-      `https://jsonplaceholder.typicode.com/users`,
-    );
-    const anotherUsers = response.data;
-    setAnotherUsers(anotherUsers);
-    setActiveUser(anotherUsers[ACTIVE_USER_ID - 1]);
-    setIsLoading(false);
-  };
+
+  const updateUser = (user: IUser | null) => {
+    setActiveUser(user)
+  }
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    active()
+  }, [activeUser]);
 
-  const ActiveUserContextValue = { activeUser };
+  const active = async () => {
+    const activeID = await authMe();
+    setActiveUser(activeID?.data)
+    setIsLoading(false)
+  }
+  const ActiveUserContextValue = { activeUser, updateUser };
 
   return (
     <ActiveUserContext.Provider value={ActiveUserContextValue}>
@@ -53,7 +53,7 @@ const App: FC = () => {
               <MyHeader />
             </Header>
             <Layout>
-              <Sider width={200} className={styles.site_layout_background}>
+            {activeUser ? <Sider width={200} className={styles.site_layout_background}>
                 <Menu
                   mode="inline"
                   defaultSelectedKeys={['0']}
@@ -91,7 +91,8 @@ const App: FC = () => {
                     </NavLink>
                   </Menu.Item>
                 </Menu>
-              </Sider>
+              </Sider> : null}
+            
               <Layout style={{ padding: '0 24px 24px' }}>
                 <Content
                   className="site-layout-background"
@@ -106,26 +107,21 @@ const App: FC = () => {
                       <Loader />
                     ) : (
                       <Routes>
-                        <Route path="/main" />
-                        <Route path="/profile" element={<Profile />} />
-                        <Route path="/users" element={<Users />} />
-                        {anotherUsers?.map(state => (
-                          <Route
-                            path={`/users/${state.id}`}
-                            element={
-                              <UserProfile
-                                name={state.name}
-                                email={state.email}
-                                phone={state.phone}
-                                address={state.address}
-                                id={state.id}
-                              />
-                            }
-                          />
-                        ))}
+                        {activeUser ? (
+                          <React.Fragment>
+                            <Route path="/profile" element={<Profile />} />
+                            <Route path="/users" element={<Users />} />
+                            <Route path="/users/:id" element={<UserProfile />} />
+                          </React.Fragment>
+                        ) :
+                          (
+                            <React.Fragment>
+                              <Route path="signIn" element={<SignIn />} />
+                              <Route path="signUp" element={<SignUp />} />
+                            </React.Fragment>
+                          )
+                        }
                         <Route path="*" element={<NotFound />} />
-                        <Route path="signIn" element={<SignIn />} />
-                        <Route path="signUp" element={<SignUp />} />
                       </Routes>
                     )}
                   </div>

@@ -10,10 +10,8 @@ const Info: FC = () => {
   return (
     <div className={styles.info}>
       <h2>About me</h2>
-      <span>Phone: {activeUser?.phone}</span> <br></br>
       <span>Email: {activeUser?.email}</span>
       <br></br>
-      <span>City: {activeUser?.address.city} </span>
     </div>
   );
 };

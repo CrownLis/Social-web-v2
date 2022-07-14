@@ -1,10 +1,11 @@
 .post {
-    border: 2px solid black;
+    border: 2px solid rgb(107, 41, 128);
     margin: 5px;
     padding:10px;
     border-radius: 10px;
-    background-color: rgb(107, 41, 128);
+    background-color: white;
     font-size: 18px;
+    color: rgb(107, 41, 128);
     display: grid;
     grid-template-columns: 9fr 1fr;
 }
@@ -17,13 +18,10 @@ display: block;
     max-width: 120px;
     max-height: 30px;
     align-self: center;
-    padding:5px;
     border:0px;
     border-radius: 4px;
     }
     .remove:hover {
       cursor: pointer;
-      border:2px solid black;
-      font-weight: bold;
-      color:rgba(255, 0, 0, 0.692);
+      color:red
     }
