@@ -1,20 +1,22 @@
-import { Button, Checkbox, Form, Input } from 'antd';
-import axios from 'axios';
-import React, { FC } from 'react';
-import socialWebApi, { signUp } from '../../API/socialWeb';
+import { Form, Input } from 'antd';
+import { FC } from 'react';
+import { signUp } from '../../API/socialWeb';
 import  { useNavigate } from 'react-router-dom'
 
 import style from './SignUp.module.css';
 import MyButton from '../../UI/MyButton/MyButton';
 
 const SignUp: FC = () => {
+  
 
 const navigation = useNavigate()
 
-  const onFinish = async (values: {}) => {
-    await signUp(values)
+  const onFinish = async (values: { avatar: any; }) => {
+    console.log(values)
+    await signUp({
+      ...values,
+    avatar: values?.avatar || 'https://инобр.рф/upload/iblock/61f/no-avatar-8.png'})
     navigation('/signIn')
-    
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -70,8 +72,9 @@ const navigation = useNavigate()
         label="Avatar"
         name="avatar"
         rules={[{ required: false }]}
+
       >
-        <Input />
+        <Input/>
       </Form.Item>
 
 

@@ -3,7 +3,7 @@
   grid-template-areas:
     "avatar name"
     "avatar info"
-    ". info"
+    "avatar info"
     "comment comment";
 
   grid-template-columns: 460px 1fr;
@@ -11,9 +11,11 @@
 }
 
 .avatar {
-  padding: 30px;
+  padding: 20px;
   grid-area: avatar;
-  max-width: 300px;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
 }
 
 .avatar img {
@@ -37,3 +39,9 @@
   flex-direction: column;
 }
 
+.avatar :global(.ant-btn):global(.ant-btn-round) {
+  margin: 10px auto;
+  justify-content: center;
+  width: max-content;
+  height: max-content;
+}

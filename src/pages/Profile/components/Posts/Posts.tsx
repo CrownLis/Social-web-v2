@@ -16,7 +16,6 @@ interface PostsProps {
 
 const Posts: FC<PostsProps> = ({ posts: externalPosts }) => {
   const [posts, setPosts] = useState(externalPosts);
-  console.log(posts)
   const removePost = async (id: number) => {
     await deletePost(id);
     setPosts(posts.filter(p => p.id !== id));

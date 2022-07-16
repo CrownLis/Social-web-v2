@@ -4,7 +4,7 @@ const socialWebApi = axios.create({
     baseURL: 'http://localhost:3001'
 })
 
-export const signUp = async (values:{}) => {
+export const signUp = async (values: { avatar: any; }) => {
     return await socialWebApi.post('/auth/sign-up',values)
 }
 
@@ -39,6 +39,10 @@ export const deletePost = async (id:number) => {
 
 export const getUser = async (id:string) => {
     return await socialWebApi.get(`/users/${id}`)
+}
+
+export const searchUser = async (value:string | undefined) => {
+    return await socialWebApi.get(`/users?filter=firstName||$starts||${value}`)
 }
 
 export default socialWebApi

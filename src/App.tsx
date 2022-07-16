@@ -1,14 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes, NavLink } from 'react-router-dom';
-import axios from 'axios';
 import { TeamOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, PageHeader } from 'antd';
+import { Layout, Menu } from 'antd';
 
 import Profile from './pages/Profile/Profile';
 import NotFound from './pages/NotFound/NotFound';
 import Users from './pages/Users/Users';
-import { ACTIVE_USER_ID } from './constants/user';
 import ActiveUserContext from './context/ActiveUserContext';
 import UserProfile from './pages/UserProfile/UserProfile';
 import SignIn from './pages/SignIn/SignIn';
@@ -20,7 +17,8 @@ import styles from './App.module.css';
 import 'antd/dist/antd.css';
 import './assets/styles/core.css';
 import MyHeader from './components/Header/MyHeader';
-import { authMe, getUsers } from './API/socialWeb';
+import { authMe } from './API/socialWeb';
+import Guest from './pages/Guest/Guest';
 
 const App: FC = () => {
   const { Header, Content, Sider } = Layout;
@@ -28,20 +26,21 @@ const App: FC = () => {
   const [activeUser, setActiveUser] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-
   const updateUser = (user: IUser | null) => {
     setActiveUser(user)
   }
 
-  useEffect(() => {
-    active()
-  }, [activeUser]);
 
   const active = async () => {
     const activeID = await authMe();
     setActiveUser(activeID?.data)
     setIsLoading(false)
   }
+
+  useEffect(() => {
+    active()
+  }, []);
+
   const ActiveUserContextValue = { activeUser, updateUser };
 
   return (
@@ -50,10 +49,10 @@ const App: FC = () => {
         <div className="container">
           <Layout>
             <Header className={styles.head}>
-              <MyHeader />
+              <MyHeader rerender={active}/>
             </Header>
             <Layout>
-            {activeUser ? <Sider width={200} className={styles.site_layout_background}>
+              {activeUser ? <Sider width={200} className={styles.site_layout_background}>
                 <Menu
                   mode="inline"
                   defaultSelectedKeys={['0']}
@@ -92,7 +91,7 @@ const App: FC = () => {
                   </Menu.Item>
                 </Menu>
               </Sider> : null}
-            
+
               <Layout style={{ padding: '0 24px 24px' }}>
                 <Content
                   className="site-layout-background"
@@ -116,6 +115,7 @@ const App: FC = () => {
                         ) :
                           (
                             <React.Fragment>
+                              <Route path="Guest" element={<Guest />} />
                               <Route path="signIn" element={<SignIn />} />
                               <Route path="signUp" element={<SignUp />} />
                             </React.Fragment>
