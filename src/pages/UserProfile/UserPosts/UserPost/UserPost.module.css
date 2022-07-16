@@ -1,0 +1,27 @@
+.post {
+    border: 2px solid rgb(107, 41, 128);
+    margin: 5px;
+    padding:10px;
+    border-radius: 10px;
+    background-color: white;
+    font-size: 18px;
+    color: rgb(107, 41, 128);
+    display: grid;
+    grid-template-columns: 9fr 1fr;
+}
+.post:hover .remove {
+display: block;
+}
+.remove {
+    display:none;
+    background-color: #fff;
+    max-width: 120px;
+    max-height: 30px;
+    align-self: center;
+    border:0px;
+    border-radius: 4px;
+    }
+    .remove:hover {
+      cursor: pointer;
+      color:red
+    }

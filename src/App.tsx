@@ -115,12 +115,13 @@ const App: FC = () => {
                         ) :
                           (
                             <React.Fragment>
-                              <Route path="Guest" element={<Guest />} />
+                
                               <Route path="signIn" element={<SignIn />} />
                               <Route path="signUp" element={<SignUp />} />
                             </React.Fragment>
                           )
                         }
+                         <Route path="guest" element={<Guest />} />
                         <Route path="*" element={<NotFound />} />
                       </Routes>
                     )}
