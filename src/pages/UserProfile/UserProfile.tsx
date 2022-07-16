@@ -1,13 +1,13 @@
 import { FC, useEffect, useState } from 'react';
-
-import UsersInfo from './UsersInfo/UsersInfo';
-import Posts from '../Profile/components/Posts/Posts';
-import Loader from '../Loader/Loader';
-
-import style from './UserProfile.module.css';
 import { IPost, IUser } from '../../type/types';
 import { getPosts, getUser } from '../../API/socialWeb';
 import { useParams } from 'react-router-dom';
+
+import UsersInfo from './UsersInfo/UsersInfo';
+import Loader from '../Loader/Loader';
+import UserPosts from './UserPosts/UserPosts';
+
+import style from './UserProfile.module.css';
 
 const UserProfile: FC = () => {
   const { id } = useParams()
@@ -41,7 +41,7 @@ const UserProfile: FC = () => {
           <div className={style.name}>{`${user?.firstName} ${user?.lastName}`}</div>
           <UsersInfo firstName={user?.firstName} lastName={user?.lastName} email={user?.email} avatar={user?.avatar} id={user?.id} />
           <div className={style.posts}>
-            <Posts posts={posts} />
+            <UserPosts posts={posts} />
           </div>
         </div>
       )}

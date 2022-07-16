@@ -52,7 +52,9 @@ const Users: FC = () => {
               padding: '0 16px',
             }}
           >
-            <input ref={search} onChange={useSearch} placeholder='search'/>
+            <div className={style.inputContainer}>
+            <input ref={search} onChange={useSearch} placeholder='search' className={style.input}/>
+            </div>
             <List
               className="demo-loadmore-list"
               loading={initLoading}
