@@ -49,49 +49,43 @@ const App: FC = () => {
         <div className="container">
           <Layout>
             <Header className={styles.head}>
-              <MyHeader rerender={active}/>
+              <MyHeader />
             </Header>
             <Layout>
-              {activeUser ? <Sider width={200} className={styles.site_layout_background}>
+              {activeUser ? <Sider width={200}>
                 <Menu
                   mode="inline"
-                  defaultSelectedKeys={['0']}
-                  defaultOpenKeys={['sub1']}
                   style={{ height: '100%', borderRight: 0 }}
                 >
-                  <Menu.Item key="Profile">
-                    <NavLink
-                      to="/profile"
-                      className={navData =>
-                        navData.isActive ? styles.active : styles.default
-                      }
-                    >
+                  <NavLink to="/profile"
+                    className={navData =>
+                      navData.isActive ? styles.active : styles.default
+                    }>
+                    <div>
                       <UserOutlined /> Profile
-                    </NavLink>
-                  </Menu.Item>
-                  <Menu.Item key="Users">
-                    <NavLink
-                      to="/users"
-                      className={navData =>
-                        navData.isActive ? styles.active : styles.default
-                      }
-                    >
+                    </div>
+                  </NavLink>
+                  <NavLink
+                    to="/users"
+                    className={navData =>
+                      navData.isActive ? styles.active : styles.default
+                    }
+                  >
+                    <div>
                       <TeamOutlined /> Users
-                    </NavLink>
-                  </Menu.Item>
-                  <Menu.Item key="Messages">
-                    <NavLink
-                      to="/message"
-                      className={navData =>
-                        navData.isActive ? styles.active : styles.default
-                      }
-                    >
+                    </div>
+                  </NavLink>
+                  <NavLink
+                    to="/message"
+                    className={navData =>
+                      navData.isActive ? styles.active : styles.default
+                    }>
+                    <div>
                       <MessageOutlined /> Messages
-                    </NavLink>
-                  </Menu.Item>
+                    </div>
+                  </NavLink>
                 </Menu>
               </Sider> : null}
-
               <Layout style={{ padding: '0 24px 24px' }}>
                 <Content
                   className="site-layout-background"
@@ -115,13 +109,13 @@ const App: FC = () => {
                         ) :
                           (
                             <React.Fragment>
-                
+
                               <Route path="signIn" element={<SignIn />} />
                               <Route path="signUp" element={<SignUp />} />
                             </React.Fragment>
                           )
                         }
-                         <Route path="guest" element={<Guest />} />
+                        <Route path="guest" element={<Guest />} />
                         <Route path="*" element={<NotFound />} />
                       </Routes>
                     )}
@@ -132,7 +126,7 @@ const App: FC = () => {
           </Layout>
         </div>
       </BrowserRouter>
-    </ActiveUserContext.Provider>
+    </ActiveUserContext.Provider >
   );
 };
 

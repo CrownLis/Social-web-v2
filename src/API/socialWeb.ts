@@ -8,7 +8,7 @@ export const signUp = async (values: { avatar: any; }) => {
     return await socialWebApi.post('/auth/sign-up',values)
 }
 
-export const signIn = async (values:{}) => {
+export const signIn = async (values:Record<string,any>) => {
     return await socialWebApi.post('/auth/sign-in',values)
 }
 
@@ -21,16 +21,12 @@ export const authMe = async () => {
     }
 }
 
-export const addPost = async (values:{}) => {
+export const addPost = async (values:Record<string,any>) => {
     return await socialWebApi.post('/posts',values)
 }
 
 export const getPosts = async (userId:string | number | undefined) => {
     return await socialWebApi.get(`/posts?s={"userId":${userId}}`)
-}
-
-export const getUsers = async () => {
-    return await socialWebApi.get('/users')
 }
 
 export const deletePost = async (id:number) => {
@@ -41,8 +37,12 @@ export const getUser = async (id:string) => {
     return await socialWebApi.get(`/users/${id}`)
 }
 
-export const searchUser = async (value:string | undefined) => {
-    return await socialWebApi.get(`/users?filter=firstName||$starts||${value}`)
+export const searchUser = async (activeId:number, queryParams?:string ) => {
+    if (!queryParams)
+    {queryParams=`?filter=id||$ne||${activeId}`} 
+    else {
+    queryParams= `?filter=id||$ne||${activeId}&filter=firstName||$starts||${queryParams}`
+    }
+    return await socialWebApi.get(`/users${queryParams}`)
 }
-
 export default socialWebApi

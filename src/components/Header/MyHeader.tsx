@@ -7,22 +7,18 @@ import MyButton from '../../UI/MyButton/MyButton';
 
 import styles from './MyHeader.module.css';
 
-interface Rerendering {
-  rerender: () => void
-}
+interface MyHeaderProps {}
 
-const MyHeader: FC<Rerendering> = (rerender) => { 
+const MyHeader: FC<MyHeaderProps> = () => { 
   const navigator = useNavigate()
 
   const logOut = () => {
     localStorage.removeItem('access_token')
     navigator('/SignIn')
-    rerender.rerender()
+    updateUser(null)
   }
-
-
   
-  const { activeUser } = useContext(ActiveUserContext)
+  const { activeUser, updateUser } = useContext(ActiveUserContext)
 
   return (
     <div className={styles.header}>

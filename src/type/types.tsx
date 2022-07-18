@@ -3,12 +3,11 @@ export interface IAdress {
 }
 
 export interface IUser {
-  loading?: boolean | undefined;
-  id: number | undefined;
-  firstName: string | undefined;
-  lastName: string | undefined;
-  email: string | undefined;
-  avatar: string | undefined;
+  id: number ;
+  firstName: string;
+  lastName: string ;
+  email: string ;
+  avatar: string ;
 }
 
 export interface IPost {

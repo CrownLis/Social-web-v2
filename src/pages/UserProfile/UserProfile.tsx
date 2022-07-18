@@ -13,10 +13,11 @@ const UserProfile: FC = () => {
   const { id } = useParams()
 
   const [posts, setPosts] = useState<IPost[]>([]);
-  const [user,setUser] = useState<IUser>()
+  const [user, setUser] = useState<IUser>()
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchUser = async (userId:string) => {
+  const fetchUser = async (userId: string) => {
+    setIsLoading(true);
     const activeUser = await getUser(userId);
     setUser(activeUser.data);
     const postList = await getPosts(userId);
@@ -24,10 +25,10 @@ const UserProfile: FC = () => {
     setIsLoading(false);
   }
 
-
   useEffect(() => {
-   if (id) { fetchUser(id)};
+    if (id) { fetchUser(id) };
   }, [id]);
+
 
   return (
     <div className={style.container}>
@@ -39,7 +40,9 @@ const UserProfile: FC = () => {
             <img src={user?.avatar} alt={user?.avatar}></img>
           </div>
           <div className={style.name}>{`${user?.firstName} ${user?.lastName}`}</div>
-          <UsersInfo firstName={user?.firstName} lastName={user?.lastName} email={user?.email} avatar={user?.avatar} id={user?.id} />
+          {user ?
+            <UsersInfo firstName={user.firstName} lastName={user.lastName} email={user.email} avatar={user.avatar} id={user.id} />
+            : null}
           <div className={style.posts}>
             <UserPosts posts={posts} />
           </div>
@@ -47,6 +50,6 @@ const UserProfile: FC = () => {
       )}
     </div>
   );
-};
+}
 
 export default UserProfile;

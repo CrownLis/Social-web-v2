@@ -1,43 +1,41 @@
-import { FC, useContext, useEffect, useRef, useState } from 'react';
-import { Avatar, Input, InputRef, List, Skeleton } from 'antd';
+import { FC, useContext, useEffect, useState } from 'react';
+import { Avatar, List, Skeleton } from 'antd';
 
 import Loader from '../Loader/Loader';
 import { IUser } from '../../type/types';
 
 import style from './Users.module.css';
-import { getUsers, searchUser } from '../../API/socialWeb';
+import { searchUser } from '../../API/socialWeb';
 import MyButton from '../../UI/MyButton/MyButton';
 import { NavLink } from 'react-router-dom';
 import ActiveUserContext from '../../context/ActiveUserContext';
-import MyInput from '../../UI/MyInput/MyInput';
 
 const Users: FC = () => {
-  const search = useRef<HTMLInputElement | null>(null)
+  const [search,setSearch] = useState('')
   const { activeUser } = useContext(ActiveUserContext);
   const [users, setUsers] = useState<IUser[]>([]);
   const [initLoading, setInitLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchUsers = async () => {
-    const usersList = await getUsers();
-    const userListWithoutActive = usersList.data.filter((user: { id: number | undefined; }) => user.id != activeUser?.id)
-    setUsers(userListWithoutActive);
-    setIsLoading(false);
-    setInitLoading(false);
-  };
 
-  const useSearch = async () => {
-    const searchedUsers: any = await searchUser(search?.current?.value)
-      .catch(
-        fetchUsers
-      )
-    const searchedUsersWithoutActive = searchedUsers.data.filter((user: { id: number | undefined; }) => user.id != activeUser?.id)
-    setUsers(searchedUsersWithoutActive);
+  const onChangeSearch = async () => {
+    if (activeUser?.id) {
+      try {
+        const searchedUsersList = await searchUser(activeUser.id, search);
+        setUsers(searchedUsersList.data)
+        setIsLoading(false);
+      setInitLoading(false);
+      }
+      catch {
+       console.log('error')
+      }
+    }
   }
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    onChangeSearch();
+  }, [search]);
+
 
   return (
     <div className={style.userList}>
@@ -53,7 +51,7 @@ const Users: FC = () => {
             }}
           >
             <div className={style.inputContainer}>
-            <input ref={search} onChange={useSearch} placeholder='search' className={style.input}/>
+              <input onChange={(e => setSearch(e.target.value))} placeholder='search' className={style.input} value={search}/>
             </div>
             <List
               className="demo-loadmore-list"
@@ -64,7 +62,7 @@ const Users: FC = () => {
               renderItem={item => (
                 <List.Item
                 >
-                  <Skeleton avatar title={false} loading={item.loading} active >
+                  <Skeleton avatar title={false} loading={false} active >
                     <List.Item.Meta className={style.title}
                       avatar={<Avatar src={item.avatar} className={style.avatar} />}
                       title={<NavLink to={`/users/${item.id}`} > {`${item.firstName} ${item.lastName}`}</NavLink>}
