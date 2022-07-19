@@ -1,31 +1,52 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
+import { Button, Form, Input, Modal } from 'antd';
 
 import Posts from './components/Posts/Posts';
 import Info from './components/Info/Info';
 import ActiveUserContext from '../../context/ActiveUserContext';
+import { signUp } from '../../API/socialWeb';
 
 import styles from './Profile.module.css';
 import Loader from '../Loader/Loader';
-import axios from 'axios';
 import { IPost } from '../../type/types';
+import { getPosts } from '../../API/socialWeb';
+import MyButton from '../../UI/MyButton/MyButton';
 
 const Profile: FC = () => {
-  const fetchUsers = async () => {
-    const response = await axios.get<IPost[]>(
-      `https://jsonplaceholder.typicode.com/posts?_limit=5`,
-    );
-    const posts = response.data;
-    setPosts(posts);
-    setIsLoading(false);
-  };
 
+  const { activeUser } = useContext(ActiveUserContext);
+
+  const fetchUser = async () => {
+    const postList = await getPosts(activeUser?.id);
+    setPosts(postList.data)
+    setIsLoading(false)
+  }
   useEffect(() => {
-    fetchUsers();
+    fetchUser();
   }, []);
 
+  const showModal = () => {
+    setVisible(true);
+  };
+
+  const handleOk = async (values:{}) => {
+    // await signUp(values)  на беке нету нужной функции,чтобы изменить аватар
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setVisible(false);
+      setConfirmLoading(false);
+    }, 2000);
+  };
+
+  const handleCancel = () => {
+    console.log('Clicked cancel button');
+    setVisible(false);
+  };
+
+  const [visible, setVisible] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const [posts, setPosts] = useState<IPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { activeUser } = useContext(ActiveUserContext);
 
   return (
     <div className={styles.container}>
@@ -34,9 +55,43 @@ const Profile: FC = () => {
       ) : (
         <div className={styles.content}>
           <div className={styles.avatar}>
-            <img src="" alt="my avatar"></img>
+            <img src={activeUser?.avatar} alt="my avatar"></img>
+            <MyButton type="primary" OnClick={showModal}>
+              Change avatar
+            </MyButton>
+            <Modal
+              title="Change avatar"
+              visible={visible}
+              confirmLoading={confirmLoading}
+              footer={null}
+              closable={false}
+            >
+              <Form
+                onFinish={handleOk}
+
+              >
+                <Form.Item
+                  className={styles.label}
+                  label="Avatar:URL"
+                  name="avatar"
+                  rules={[{ required: true, message: 'Please input URL!' },
+                  { type: 'string' }
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item className={styles.btn}>
+                  <MyButton type="primary" htmlType="submit">
+                    Change
+                  </MyButton>
+                  <MyButton type="primary" htmlType="button" OnClick={handleCancel}>
+                    Cancel
+                  </MyButton>
+                </Form.Item>
+              </Form>
+            </Modal>
           </div>
-          <div className={styles.name}>{activeUser?.name}</div>
+          <div className={styles.name}>{`${activeUser?.firstName} ${activeUser?.lastName}`}</div>
           <Info />
           <div className={styles.posts}>
             <Posts posts={posts} />

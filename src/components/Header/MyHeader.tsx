@@ -1,21 +1,39 @@
-import { FC } from 'react';
-import { NavLink } from 'react-router-dom';
+import { FC, useContext } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import Pineapple from '../../assets/images/pineapple.png';
+import ActiveUserContext from '../../context/ActiveUserContext';
 import MyButton from '../../UI/MyButton/MyButton';
 
 import styles from './MyHeader.module.css';
 
-const MyHeader: FC = () => {
+interface MyHeaderProps {}
+
+const MyHeader: FC<MyHeaderProps> = () => { 
+  const navigator = useNavigate()
+
+  const logOut = () => {
+    localStorage.removeItem('access_token')
+    navigator('/SignIn')
+    updateUser(null)
+  }
+  
+  const { activeUser, updateUser } = useContext(ActiveUserContext)
+
   return (
     <div className={styles.header}>
-      <NavLink to="/main" className={styles.logo}>
+      {activeUser ? <NavLink to="/profile" className={styles.logo}>
         <img src={Pineapple} alt="pineapple" className={styles.logotype}></img>
         <h1>Ananasoviy Sok</h1>
-      </NavLink>
-      <NavLink to="signIn" className={styles.btn}>
+      </NavLink> : <NavLink to="/signIn" className={styles.logo}>
+        <img src={Pineapple} alt="pineapple" className={styles.logotype}></img>
+        <h1>Ananasoviy Sok</h1>
+      </NavLink>}
+      {activeUser ? <NavLink to="signIn" className={styles.btn}>
+        <MyButton OnClick={logOut} htmlType='button'>Log out</MyButton>
+      </NavLink> : <NavLink to="signIn" className={styles.btn}>
         <MyButton>Sign In</MyButton>
-      </NavLink>
+      </NavLink>}
     </div>
   );
 };

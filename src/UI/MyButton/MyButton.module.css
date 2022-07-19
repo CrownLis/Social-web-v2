@@ -1,10 +1,46 @@
-.primary {
-background-color: rgb(245, 245, 245);
-color: purple;
-border-color: rgb(82, 50, 92);
+:global(.ant-btn-ghost).btn {
+    background-color: rgb(245, 245, 245);
+    color: purple;
+    border-color: rgb(82, 50, 92);
 }
-.primary:hover {
+
+:global(.ant-btn-ghost).btn:hover {
     background-color: rgb(82, 50, 92);
     border-color: white;
-    font-weight: bold;
+    color: white
+}
+
+:global(.ant-btn-ghost).btn:focus {
+    background-color: rgb(245, 245, 245);
+    color: purple;
+    border-color: rgb(82, 50, 92);
+}
+
+:global(.ant-btn-ghost).btn:focus:hover {
+    background-color: rgb(82, 50, 92);
+    border-color: white;
+    color: white
+}
+
+:global(.ant-btn-primary).btn {
+    background-color: rgb(82, 50, 92);
+    color: rgb(255, 255, 255);
+    border-color: rgb(189, 189, 189);
+}
+
+:global(.ant-btn-primary).btn:hover {
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(0, 0, 0);
+    color: rgb(82, 50, 92)
+}
+
+:global(.ant-btn-primary).btn:focus {
+    background-color: rgb(82, 50, 92);
+    color: rgb(255, 255, 255);
+    border-color: rgb(189, 189, 189);
+}
+:global(.ant-btn-primary).btn:focus:hover {
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(0, 0, 0);
+    color: rgb(82, 50, 92)
 }

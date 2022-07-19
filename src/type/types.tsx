@@ -3,16 +3,15 @@ export interface IAdress {
 }
 
 export interface IUser {
-  id: number;
-  name: string;
-  email: string;
-  address: IAdress;
-  phone: number;
+  id: number ;
+  firstName: string;
+  lastName: string ;
+  email: string ;
+  avatar: string ;
 }
 
 export interface IPost {
   id: number;
   userId?: number;
-  title?: string;
-  body: string;
+  text:string
 }

@@ -3,22 +3,30 @@
   grid-template-areas:
     "avatar name"
     "avatar info"
-    ". info"
+    "avatar info"
     "comment comment";
-
   grid-template-columns: 460px 1fr;
   grid-template-rows: 120px 280px 60px 1fr;
 }
 
 .avatar {
-  padding: 30px;
+  padding: 20px;
   grid-area: avatar;
-  max-width: 300px;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
 }
 
 .avatar img {
   border: 8px solid purple;
   border-radius: 10%;
+  max-width: inherit;
+}
+
+.btn :global(.ant-col) :global(.ant-form-item-control-input) :global(.ant-form-item-control-input-content) {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 .name {
@@ -27,12 +35,20 @@
   font-size: 46px;
   font-weight: bold;
 }
+
 .posts {
   grid-area: comment;
   padding: 20px;
 }
+
 .container {
   display: flex;
   flex-direction: column;
 }
 
+.avatar :global(.ant-btn):global(.ant-btn-round) {
+  margin: 10px auto;
+  justify-content: center;
+  width: max-content;
+  height: max-content;
+}

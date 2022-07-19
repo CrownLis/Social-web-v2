@@ -1,14 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes, NavLink } from 'react-router-dom';
-import axios from 'axios';
 import { TeamOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, PageHeader } from 'antd';
+import { Layout, Menu } from 'antd';
 
 import Profile from './pages/Profile/Profile';
 import NotFound from './pages/NotFound/NotFound';
 import Users from './pages/Users/Users';
-import { ACTIVE_USER_ID } from './constants/user';
 import ActiveUserContext from './context/ActiveUserContext';
 import UserProfile from './pages/UserProfile/UserProfile';
 import SignIn from './pages/SignIn/SignIn';
@@ -20,29 +17,31 @@ import styles from './App.module.css';
 import 'antd/dist/antd.css';
 import './assets/styles/core.css';
 import MyHeader from './components/Header/MyHeader';
+import { authMe } from './API/socialWeb';
+import Guest from './pages/Guest/Guest';
 
 const App: FC = () => {
   const { Header, Content, Sider } = Layout;
 
   const [activeUser, setActiveUser] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [anotherUsers, setAnotherUsers] = useState<IUser[]>();
 
-  const fetchUsers = async () => {
-    const response = await axios.get<IUser[]>(
-      `https://jsonplaceholder.typicode.com/users`,
-    );
-    const anotherUsers = response.data;
-    setAnotherUsers(anotherUsers);
-    setActiveUser(anotherUsers[ACTIVE_USER_ID - 1]);
-    setIsLoading(false);
-  };
+  const updateUser = (user: IUser | null) => {
+    setActiveUser(user)
+  }
+
+
+  const active = async () => {
+    const activeID = await authMe();
+    setActiveUser(activeID?.data)
+    setIsLoading(false)
+  }
 
   useEffect(() => {
-    fetchUsers();
+    active()
   }, []);
 
-  const ActiveUserContextValue = { activeUser };
+  const ActiveUserContextValue = { activeUser, updateUser };
 
   return (
     <ActiveUserContext.Provider value={ActiveUserContextValue}>
@@ -53,45 +52,40 @@ const App: FC = () => {
               <MyHeader />
             </Header>
             <Layout>
-              <Sider width={200} className={styles.site_layout_background}>
+              {activeUser ? <Sider width={200}>
                 <Menu
                   mode="inline"
-                  defaultSelectedKeys={['0']}
-                  defaultOpenKeys={['sub1']}
                   style={{ height: '100%', borderRight: 0 }}
                 >
-                  <Menu.Item key="Profile">
-                    <NavLink
-                      to="/profile"
-                      className={navData =>
-                        navData.isActive ? styles.active : styles.default
-                      }
-                    >
+                  <NavLink to="/profile"
+                    className={navData =>
+                      navData.isActive ? styles.active : styles.default
+                    }>
+                    <div>
                       <UserOutlined /> Profile
-                    </NavLink>
-                  </Menu.Item>
-                  <Menu.Item key="Users">
-                    <NavLink
-                      to="/users"
-                      className={navData =>
-                        navData.isActive ? styles.active : styles.default
-                      }
-                    >
+                    </div>
+                  </NavLink>
+                  <NavLink
+                    to="/users"
+                    className={navData =>
+                      navData.isActive ? styles.active : styles.default
+                    }
+                  >
+                    <div>
                       <TeamOutlined /> Users
-                    </NavLink>
-                  </Menu.Item>
-                  <Menu.Item key="Messages">
-                    <NavLink
-                      to="/message"
-                      className={navData =>
-                        navData.isActive ? styles.active : styles.default
-                      }
-                    >
+                    </div>
+                  </NavLink>
+                  <NavLink
+                    to="/message"
+                    className={navData =>
+                      navData.isActive ? styles.active : styles.default
+                    }>
+                    <div>
                       <MessageOutlined /> Messages
-                    </NavLink>
-                  </Menu.Item>
+                    </div>
+                  </NavLink>
                 </Menu>
-              </Sider>
+              </Sider> : null}
               <Layout style={{ padding: '0 24px 24px' }}>
                 <Content
                   className="site-layout-background"
@@ -106,26 +100,23 @@ const App: FC = () => {
                       <Loader />
                     ) : (
                       <Routes>
-                        <Route path="/main" />
-                        <Route path="/profile" element={<Profile />} />
-                        <Route path="/users" element={<Users />} />
-                        {anotherUsers?.map(state => (
-                          <Route
-                            path={`/users/${state.id}`}
-                            element={
-                              <UserProfile
-                                name={state.name}
-                                email={state.email}
-                                phone={state.phone}
-                                address={state.address}
-                                id={state.id}
-                              />
-                            }
-                          />
-                        ))}
+                        {activeUser ? (
+                          <React.Fragment>
+                            <Route path="/profile" element={<Profile />} />
+                            <Route path="/users" element={<Users />} />
+                            <Route path="/users/:id" element={<UserProfile />} />
+                          </React.Fragment>
+                        ) :
+                          (
+                            <React.Fragment>
+
+                              <Route path="signIn" element={<SignIn />} />
+                              <Route path="signUp" element={<SignUp />} />
+                            </React.Fragment>
+                          )
+                        }
+                        <Route path="guest" element={<Guest />} />
                         <Route path="*" element={<NotFound />} />
-                        <Route path="signIn" element={<SignIn />} />
-                        <Route path="signUp" element={<SignUp />} />
                       </Routes>
                     )}
                   </div>
@@ -135,7 +126,7 @@ const App: FC = () => {
           </Layout>
         </div>
       </BrowserRouter>
-    </ActiveUserContext.Provider>
+    </ActiveUserContext.Provider >
   );
 };
 

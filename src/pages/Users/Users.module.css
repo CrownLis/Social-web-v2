@@ -15,3 +15,26 @@ h2 {
 display: flex;
 flex-direction: column;
 }
+:global(.ant-avatar).avatar {
+   height: 48px;
+   width: 48px;
+   border: 1px solid rgb(82, 50, 92);
+}
+:global(.ant-list-item-meta).title{
+   align-items: center;
+}
+:global(.ant-list-item-meta).title :global(.ant-list-item-meta-content) h4 a{
+   font-size: 18px;
+   color:rgb(82, 50, 92)
+}
+.input {
+   font-size: 18px;
+   border:2px solid rgb(82, 50, 92);
+   padding:3px;
+   border-radius: 5px;
+   width:40%;
+}
+.inputContainer {
+   display:flex;
+   justify-content: center;
+}
