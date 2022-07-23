@@ -16,13 +16,8 @@ const Profile: FC = () => {
 
   const { activeUser } = useContext(ActiveUserContext);
 
-  const fetchUser = async () => {
-    const postList = await getPosts(activeUser?.id);
-    setPosts(postList.data)
-    setIsLoading(false)
-  }
   useEffect(() => {
-    fetchUser();
+    ;
   }, []);
 
   const showModal = () => {
@@ -46,8 +41,9 @@ const Profile: FC = () => {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [posts, setPosts] = useState<IPost[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
+  if (activeUser) {
   return (
     <div className={styles.container}>
       {isLoading ? (
@@ -56,7 +52,7 @@ const Profile: FC = () => {
         <div className={styles.content}>
           <div className={styles.avatar}>
             <img src={activeUser?.avatar} alt="my avatar"></img>
-            <MyButton type="primary" OnClick={showModal}>
+            <MyButton type="primary" onClick={showModal}>
               Change avatar
             </MyButton>
             <Modal
@@ -84,7 +80,7 @@ const Profile: FC = () => {
                   <MyButton type="primary" htmlType="submit">
                     Change
                   </MyButton>
-                  <MyButton type="primary" htmlType="button" OnClick={handleCancel}>
+                  <MyButton type="primary" htmlType="button" onClick={handleCancel}>
                     Cancel
                   </MyButton>
                 </Form.Item>
@@ -94,12 +90,15 @@ const Profile: FC = () => {
           <div className={styles.name}>{`${activeUser?.firstName} ${activeUser?.lastName}`}</div>
           <Info />
           <div className={styles.posts}>
-            <Posts posts={posts} />
+            <Posts users={activeUser} />
           </div>
         </div>
       )}
     </div>
   );
+                } else {
+                  return null
+                }
 };
 
 export default Profile;

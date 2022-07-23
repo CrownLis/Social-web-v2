@@ -5,7 +5,7 @@ import Loader from '../Loader/Loader';
 import { IUser } from '../../type/types';
 
 import style from './Users.module.css';
-import { searchUser } from '../../API/socialWeb';
+import { searchUsers } from '../../API/socialWeb';
 import MyButton from '../../UI/MyButton/MyButton';
 import { NavLink } from 'react-router-dom';
 import ActiveUserContext from '../../context/ActiveUserContext';
@@ -21,7 +21,7 @@ const Users: FC = () => {
   const onChangeSearch = async () => {
     if (activeUser?.id) {
       try {
-        const searchedUsersList = await searchUser(activeUser.id, search);
+        const searchedUsersList = await searchUsers(activeUser.id, search);
         setUsers(searchedUsersList.data)
         setIsLoading(false);
       setInitLoading(false);
