@@ -61,4 +61,8 @@ export const postMessage = async (values:{text:string,conversationId:string}) =>
     return await socialWebApi.post('/messages',values)
 }
 
+export const editUser = async (values: Record<string,any>) => {
+return await socialWebApi.patch('/auth/update',values)
+}
+
 export default socialWebApi

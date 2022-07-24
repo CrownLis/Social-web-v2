@@ -1,13 +1,9 @@
 
 
-import { Avatar, Checkbox, Form, Input, List, Modal, Skeleton } from 'antd'
-import { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import { Avatar, Checkbox, Form, List, Modal, Skeleton } from 'antd'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import FormItem from 'antd/lib/form/FormItem'
-import FormItemLabel from 'antd/lib/form/FormItemLabel'
-import Item from 'antd/lib/list/Item'
 import { FC, useContext, useEffect, useState } from 'react'
-import { Navigate, NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { addConversation, getConversations, searchUsers } from '../../API/socialWeb'
 import ActiveUserContext from '../../context/ActiveUserContext'
 import { IConversation, IUser } from '../../type/types'

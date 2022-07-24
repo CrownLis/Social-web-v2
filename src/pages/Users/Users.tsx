@@ -67,11 +67,6 @@ const Users: FC = () => {
                       avatar={<Avatar src={item.avatar} className={style.avatar} />}
                       title={<NavLink to={`/users/${item.id}`} > {`${item.firstName} ${item.lastName}`}</NavLink>}
                     />
-                    <div>
-                      <MyButton>
-                        Добавить в друзья
-                      </MyButton>
-                    </div>
                   </Skeleton>
                 </List.Item>
               )}
