@@ -2,9 +2,10 @@
 
 import { Avatar, Form, Input, List } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
-import { FC, useEffect, useState } from 'react'
+import { FC, useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getMessages, postMessage } from '../../../API/socialWeb'
+import ActiveUserContext from '../../../context/ActiveUserContext'
 import { IMessage } from '../../../type/types'
 import MyButton from '../../../UI/MyButton/MyButton'
 import Loader from '../../Loader/Loader'
@@ -16,6 +17,7 @@ const Dialog: FC = () => {
   const [messages, setMessages] = useState<IMessage[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [message, setMessage] = useState('')
+  const { activeUser } = useContext(ActiveUserContext)
 
   const fetchMessages = async () => {
     console.log(params)
@@ -41,30 +43,30 @@ const Dialog: FC = () => {
   if (messages) {
     return (
       <div className={style.container}>
-        {isLoading ? <Loader/> : (
+        {isLoading ? <Loader /> : (
           <div className={style.wrapper}>
             <div className={style.dialog}>
-            <List
-              itemLayout="horizontal"
-              dataSource={messages}
-              renderItem={item => (
-                <List.Item className={style.j}>
-                  <List.Item.Meta
-                  className={style.padding}
-                    avatar={<Avatar src={item.author.avatar} />}
-                    title={item.text}
-                  />
-                </List.Item>
-              )}
-            />
+              <List
+                itemLayout="horizontal"
+                dataSource={messages}
+                renderItem={item => (
+                  <List.Item className={item.authorId !== activeUser?.id? style.right : style.left}>
+                    <List.Item.Meta
+                      className={style.flexNone}
+                      avatar={<Avatar src={item.author.avatar} />}
+                      title={item.text}
+                    />
+                  </List.Item>
+                )}
+              />
             </div>
             <div className={style.input}>
-             <Form
-              onFinish={post}
-            >
-             <div> <TextArea onChange={e => setMessage(e.target.value)} value={message}/></div>
-             <div>  <MyButton htmlType='submit'>send</MyButton></div>
-            </Form>
+              <Form
+                onFinish={post}
+              >
+                <div> <TextArea onChange={e => setMessage(e.target.value)} value={message} /></div>
+                <div>  <MyButton htmlType='submit'>send</MyButton></div>
+              </Form>
             </div>
           </div>
         )

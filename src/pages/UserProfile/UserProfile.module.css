@@ -10,18 +10,6 @@
   grid-template-rows: 120px 280px 60px 1fr;
 }
 
-.avatar {
-  padding: 30px;
-  grid-area: avatar;
-  max-width: 300px;
-}
-
-.avatar img {
-  border: 8px solid purple;
-  border-radius: 10%;
-  max-width: inherit;
-}
-
 .name {
   grid-area: name;
   padding: 10px;
@@ -35,4 +23,18 @@
 .container {
   display: flex;
   flex-direction: column;
+}
+
+.avatar {
+  padding: 20px;
+  grid-area: avatar;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+}
+
+.avatar img {
+  border: 8px solid purple;
+  border-radius: 10%;
+  max-width: inherit;
 }

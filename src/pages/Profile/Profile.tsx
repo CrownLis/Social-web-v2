@@ -33,6 +33,12 @@ const Profile: FC = () => {
 
   const handleOk = async () => {
     console.log(activeUser)
+    const ava = form.getFieldValue('avatar')
+    if (ava === '') {
+      form.setFieldsValue({
+        avatar: 'https://инобр.рф/upload/iblock/61f/no-avatar-8.png'
+      })
+    }
     const newUser = await editUser(form.getFieldsValue())
     console.log(activeUser)
     updateUser(newUser.data)
@@ -60,7 +66,7 @@ const Profile: FC = () => {
             <div className={styles.avatar}>
               <img src={activeUser?.avatar} alt="my avatar"></img>
               <MyButton type="primary" onClick={showModal}>
-                Change avatar
+                Edit user
               </MyButton>
               <Modal
                 title="Change avatar"
@@ -98,7 +104,7 @@ const Profile: FC = () => {
                     className={styles.label}
                     label="Avatar:URL"
                     name="avatar"
-                    rules={[{ required: true, message: 'Please input URL!' },
+                    rules={[{ required: false, message: 'Please input URL!' },
                     { type: 'string' }
                     ]}
                   >

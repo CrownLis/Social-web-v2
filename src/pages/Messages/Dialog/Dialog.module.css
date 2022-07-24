@@ -15,8 +15,34 @@
     flex-direction: column;
 }
 
+.right .flexNone:global(.ant-list-item-meta){
+    flex-direction: row-reverse;
+}
+
+
+.flexNone:global(.ant-list-item-meta){
+    flex:none
+}
+
+.flexNone:global(.ant-list-item-meta) :global(.ant-list-item-meta-content) {
+    width: inherit;
+    overflow-wrap:anywhere;
+}
+
+.left {
+    justify-content: start;
+}
+
+.right {
+    justify-content: end;
+}
+
 .padding {
     padding: 5px;
+}
+
+.padding :global(.ant-list-item-meta-title) {
+    overflow-wrap: break-word;
 }
 
 .input {
