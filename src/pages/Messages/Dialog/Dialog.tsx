@@ -1,10 +1,10 @@
 
 
-import { Avatar, Form, Input, List } from 'antd'
+import { Avatar, Dropdown, Form, Input, List, Menu } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
 import { FC, useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getMessages, postMessage } from '../../../API/socialWeb'
+import { deleteMessage, getMessages, postMessage } from '../../../API/socialWeb'
 import ActiveUserContext from '../../../context/ActiveUserContext'
 import { IMessage } from '../../../type/types'
 import MyButton from '../../../UI/MyButton/MyButton'
@@ -25,6 +25,11 @@ const Dialog: FC = () => {
     setMessages(x.data)
     setIsLoading(false)
   }
+
+  const removeMessage = async (id: number) => {
+    await deleteMessage(id)
+    await fetchMessages()
+  };
 
   const post = async () => {
     let id = params.conversationId
@@ -50,11 +55,26 @@ const Dialog: FC = () => {
                 itemLayout="horizontal"
                 dataSource={messages}
                 renderItem={item => (
-                  <List.Item className={item.authorId !== activeUser?.id? style.right : style.left}>
+                  <List.Item className={item.authorId !== activeUser?.id ? style.right : style.left}>
                     <List.Item.Meta
                       className={style.flexNone}
                       avatar={<Avatar src={item.author.avatar} />}
-                      title={item.text}
+                      title={item.authorId === activeUser?.id ?
+                      <Dropdown  overlay={<Menu className={style.delete}
+                        items={[
+                          {
+                            
+                            key: '1',
+                            label: (
+                              <div onClick={() => removeMessage(item.id)}>delete</div>
+                            ),
+                            
+                          },
+                        ]
+                        }
+                      />}>
+                        <div>{item.text}</div>
+                      </Dropdown> :  <div>{item.text}</div>} 
                     />
                   </List.Item>
                 )}

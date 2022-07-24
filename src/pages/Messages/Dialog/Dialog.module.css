@@ -72,3 +72,25 @@
     border-radius: 10px;
     border:2px solid rgb(82, 50, 92);
 }
+
+#components-dropdown-demo-arrow .ant-btn {
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+  .ant-row-rtl #components-dropdown-demo-arrow .ant-btn {
+    margin-right: 0;
+    margin-bottom: 8px;
+    margin-left: 8px;
+  }
+
+  .delete :global(.ant-dropdown-menu-title-content) {
+    max-width: 100px;
+  }
+  
+  :global(.ant-dropdown-menu) {
+    width: 100px;
+  }
+
+  :global(.ant-dropdown) {
+    min-width: none;
+  }

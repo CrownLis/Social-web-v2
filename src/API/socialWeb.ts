@@ -33,6 +33,10 @@ export const deletePost = async (id: number) => {
     return await socialWebApi.delete(`/posts/${id}`)
 }
 
+export const deleteMessage = async (id: number) => {
+    return await socialWebApi.delete(`/messages/${id}`)
+}
+
 export const getUser = async (id: string) => {
     return await socialWebApi.get(`/users/${id}`)
 }
