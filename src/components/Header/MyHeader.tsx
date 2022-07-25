@@ -30,7 +30,7 @@ const MyHeader: FC<MyHeaderProps> = () => {
         <h1>Ananasoviy Sok</h1>
       </NavLink>}
       {activeUser ? <NavLink to="signIn" className={styles.btn}>
-        <MyButton OnClick={logOut} htmlType='button'>Log out</MyButton>
+        <MyButton onClick={logOut} htmlType='button'>Log out</MyButton>
       </NavLink> : <NavLink to="signIn" className={styles.btn}>
         <MyButton>Sign In</MyButton>
       </NavLink>}
