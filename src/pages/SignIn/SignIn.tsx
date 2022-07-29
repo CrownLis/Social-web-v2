@@ -1,16 +1,17 @@
 import { Form, Input } from 'antd';
-import { FC, useContext } from 'react';
+import { FC } from 'react';
+import { useDispatch } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import socialWebApi, { signIn } from '../../API/socialWeb';
-import ActiveUserContext from '../../context/ActiveUserContext';
+import { SET_USER } from '../../store/ducks/activeUser/actions';
+import { useAppDispatch } from '../../store/hooks';
 import MyButton from '../../UI/MyButton/MyButton';
 
 import style from './SignIn.module.css';
 
 const SignIn: FC = () => {
 
-  const { updateUser } = useContext(ActiveUserContext);
-
+  const dispatch = useAppDispatch()
   const navigation = useNavigate();
 
   const [form] = Form.useForm();
@@ -19,7 +20,7 @@ const SignIn: FC = () => {
     const response = await signIn(values)
     localStorage.setItem('access_token', response.data.access_token)
     socialWebApi.defaults.headers.common['Authorization'] = ` Bearer ${localStorage.getItem('access_token')}`;
-    updateUser(response.data.user)
+    dispatch({type:SET_USER,payload:response.data.user})
     navigation('/Profile')
   };
 

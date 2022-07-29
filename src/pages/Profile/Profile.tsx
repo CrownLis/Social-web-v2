@@ -1,26 +1,23 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
-import { Button, Form, Input, Modal } from 'antd';
+import { FC, useEffect, useState } from 'react';
+import { Form, Input, Modal } from 'antd';
 
 import Posts from './components/Posts/Posts';
 import Info from './components/Info/Info';
-import ActiveUserContext from '../../context/ActiveUserContext';
-import { editUser, signIn, signUp } from '../../API/socialWeb';
+import { editUser } from '../../API/socialWeb';
 
 import styles from './Profile.module.css';
 import Loader from '../Loader/Loader';
-import { IPost } from '../../type/types';
-import { getPosts } from '../../API/socialWeb';
 import MyButton from '../../UI/MyButton/MyButton';
 import { useForm } from 'antd/lib/form/Form';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getActiveUser } from '../../store/ducks/activeUser/selectors';
+import { SET_USER } from '../../store/ducks/activeUser/actions';
 
 const Profile: FC = () => {
 
+  const dispatch = useAppDispatch()
   const [form] = useForm()
-  const { activeUser, updateUser } = useContext(ActiveUserContext);
-
-  useEffect(() => {
-    ;
-  }, []);
+  const activeUser = useAppSelector(getActiveUser)
 
   const showModal = () => {
     setVisible(true);
@@ -31,8 +28,9 @@ const Profile: FC = () => {
     });
   };
 
+
   const handleOk = async () => {
-    console.log(activeUser)
+    setConfirmLoading(true);
     const ava = form.getFieldValue('avatar')
     if (ava === '') {
       form.setFieldsValue({
@@ -40,9 +38,7 @@ const Profile: FC = () => {
       })
     }
     const newUser = await editUser(form.getFieldsValue())
-    console.log(activeUser)
-    updateUser(newUser.data)
-    setConfirmLoading(true);
+    dispatch({type:SET_USER,payload:newUser.data})
     setVisible(false);
     setConfirmLoading(false);
   };
@@ -54,14 +50,10 @@ const Profile: FC = () => {
 
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   if (activeUser) {
     return (
       <div className={styles.container}>
-        {isLoading ? (
-          <Loader />
-        ) : (
           <div className={styles.content}>
             <div className={styles.avatar}>
               <img src={activeUser?.avatar} alt="my avatar"></img>
@@ -122,12 +114,11 @@ const Profile: FC = () => {
               </Modal>
             </div>
             <div className={styles.name}>{`${activeUser?.firstName} ${activeUser?.lastName}`}</div>
-            <Info />
+            <Info/>
             <div className={styles.posts}>
               <Posts users={activeUser} />
             </div>
           </div>
-        )}
       </div>
     );
   } else {

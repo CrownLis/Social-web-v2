@@ -4,6 +4,8 @@ import { useForm } from 'antd/lib/form/Form';
 import TextArea from 'antd/lib/input/TextArea';
 import { FC, useEffect, useState } from 'react';
 import { addPost, deletePost, getPosts } from '../../../../API/socialWeb';
+import { GET_POSTS } from '../../../../store/ducks/activeUser/actions';
+import { useAppDispatch } from '../../../../store/hooks';
 
 import { IUser, IPost } from '../../../../type/types';
 import MyButton from '../../../../UI/MyButton/MyButton';
@@ -17,6 +19,8 @@ interface UserProps {
 }
 
 const Posts: FC<UserProps> = (user) => {
+
+  const dispatch = useAppDispatch()
   const [form] = useForm()
   const [posts, setPosts] = useState<IPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,20 +30,21 @@ const Posts: FC<UserProps> = (user) => {
     setPosts(posts.filter(p => p.id !== id));
   };
 
-  const fetchUser = async () => {
+  const fetchPosts = async () => {
     const postList = await getPosts(user.users.id);
     setPosts(postList.data)
+    dispatch({type:GET_POSTS,payload:postList.data})
     setIsLoading(false)
   }
 
   const addNewPost = async (values:{}) => {
-    await addPost(values)
-    fetchUser()
+    const newPost = await addPost(values)
+    setPosts([...posts,newPost.data])
     form.resetFields()
   };
 
   useEffect(() => {
-    fetchUser()
+    fetchPosts()
   }, [])
 
   return (
@@ -66,6 +71,7 @@ const Posts: FC<UserProps> = (user) => {
           onFinish={addNewPost}
         >
           <Form.Item
+          
             name='text'>
             <TextArea />
           </Form.Item>

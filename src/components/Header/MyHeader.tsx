@@ -1,8 +1,11 @@
 import { FC, useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import Pineapple from '../../assets/images/pineapple.png';
-import ActiveUserContext from '../../context/ActiveUserContext';
+import { SET_USER } from '../../store/ducks/activeUser/actions';
+import { getActiveUser } from '../../store/ducks/activeUser/selectors';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import MyButton from '../../UI/MyButton/MyButton';
 
 import styles from './MyHeader.module.css';
@@ -11,14 +14,14 @@ interface MyHeaderProps {}
 
 const MyHeader: FC<MyHeaderProps> = () => { 
   const navigator = useNavigate()
+const dispatch = useAppDispatch()
+const activeUser = useAppSelector(getActiveUser)
 
   const logOut = () => {
     localStorage.removeItem('access_token')
     navigator('/SignIn')
-    updateUser(null)
+    dispatch({type:SET_USER,payload:null})
   }
-  
-  const { activeUser, updateUser } = useContext(ActiveUserContext)
 
   return (
     <div className={styles.header}>

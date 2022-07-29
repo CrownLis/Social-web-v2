@@ -3,40 +3,43 @@ import { BrowserRouter, Route, Routes, NavLink } from 'react-router-dom';
 import { TeamOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import { authMe } from './API/socialWeb';
-import { IUser } from './type/types';
+import { useAppDispatch, useAppSelector } from './store/hooks';
+import { SET_USER } from './store/ducks/activeUser/actions';
+import { getActiveUser } from './store/ducks/activeUser/selectors';
 
 import MyHeader from './components/Header/MyHeader';
 import Guest from './pages/Guest/Guest';
 import Profile from './pages/Profile/Profile';
 import NotFound from './pages/NotFound/NotFound';
 import Users from './pages/Users/Users';
-import ActiveUserContext from './context/ActiveUserContext';
 import UserProfile from './pages/UserProfile/UserProfile';
 import SignIn from './pages/SignIn/SignIn';
 import SignUp from './pages/SignUp/SignUp';
 import Loader from './pages/Loader/Loader';
+import Messages from './pages/Messages/Messages';
+import Dialog from './pages/Messages/Dialog/Dialog';
 
 import styles from './App.module.css';
 import 'antd/dist/antd.css';
 import './assets/styles/core.css';
-import Messages from './pages/Messages/Messages';
-import Dialog from './pages/Messages/Dialog/Dialog';
+
+
 
 
 const App: FC = () => {
   const { Header, Content, Sider } = Layout;
-
-  const [activeUser, setActiveUser] = useState<IUser | null>(null);
+  
+  const dispatch = useAppDispatch()
+  const activeUser = useAppSelector(getActiveUser)
   const [isLoading, setIsLoading] = useState(true);
 
-  const updateUser = (user: IUser | null) => {
-    setActiveUser(user)
-  }
+
 
 
   const active = async () => {
+    setIsLoading(true)
     const activeID = await authMe();
-    setActiveUser(activeID?.data)
+    dispatch({type:SET_USER,payload:activeID?.data})
     setIsLoading(false)
   }
 
@@ -44,10 +47,7 @@ const App: FC = () => {
     active()
   }, []);
 
-  const ActiveUserContextValue = { activeUser, updateUser };
-
   return (
-    <ActiveUserContext.Provider value={ActiveUserContextValue}>
       <BrowserRouter>
         <div className="container">
           <Layout>
@@ -131,7 +131,6 @@ const App: FC = () => {
           </Layout>
         </div>
       </BrowserRouter>
-    </ActiveUserContext.Provider >
   );
 };
 

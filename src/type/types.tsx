@@ -16,7 +16,7 @@ export interface IPost {
 export interface IConversation {
   id: number;
   status: string;
-  lastMessage: string;
+  lastMessage: IMessage;
 }
 
 export interface IMessage {
@@ -25,4 +25,8 @@ export interface IMessage {
   text: string;
   authorId:number;
   author: IUser
+}
+
+export interface ActiveUserContext {
+  activeUser: IUser | null;
 }

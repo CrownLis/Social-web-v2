@@ -1,41 +1,62 @@
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Avatar, List, Skeleton } from 'antd';
+import _ from 'lodash'
 
 import Loader from '../Loader/Loader';
 import { IUser } from '../../type/types';
 
 import style from './Users.module.css';
 import { searchUsers } from '../../API/socialWeb';
-import MyButton from '../../UI/MyButton/MyButton';
 import { NavLink } from 'react-router-dom';
-import ActiveUserContext from '../../context/ActiveUserContext';
+import { useAppSelector } from '../../store/hooks';
+import { getActiveUser } from '../../store/ducks/activeUser/selectors';
 
 const Users: FC = () => {
-  const [search,setSearch] = useState('')
-  const { activeUser } = useContext(ActiveUserContext);
+  const [search, setSearch] = useState('')
+  const activeUser = useAppSelector(getActiveUser)
   const [users, setUsers] = useState<IUser[]>([]);
-  const [initLoading, setInitLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
+  const debounceImpl = (cb: any, delay: number) => {
+    let isDebounced: any = null;
+    return (...args: any) => {
+      clearTimeout(isDebounced);
+      isDebounced = setTimeout(() => cb(...args), delay);
+    };
+  };
 
-  const onChangeSearch = async () => {
+  const invokeDebounced = useDebounce(
+    () => fetchUsers(),
+    300
+  );
+
+  const fetchUsers = async () => {
+    setIsLoading(true)
     if (activeUser?.id) {
       try {
-        const searchedUsersList = await searchUsers(activeUser.id, search);
-        setUsers(searchedUsersList.data)
+
+        const searchedUsers = await searchUsers(activeUser.id, search)
+        setUsers(searchedUsers.data)
         setIsLoading(false);
-      setInitLoading(false);
       }
       catch {
-       console.log('error')
+        console.log('error')
       }
     }
   }
 
-  useEffect(() => {
-    onChangeSearch();
-  }, [search]);
+  function useDebounce(cb: any, delay: number) {
+    const cbRef = useRef(cb);
+    useEffect(() => {
+      cbRef.current = cb;
+    });
+    return useCallback(
+      debounceImpl((...args: any) => cbRef.current(...args), delay),
+      [delay]
+    );
+  }
 
+  useEffect(() => invokeDebounced, [search]);
 
   return (
     <div className={style.userList}>
@@ -51,11 +72,11 @@ const Users: FC = () => {
             }}
           >
             <div className={style.inputContainer}>
-              <input onChange={(e => setSearch(e.target.value))} placeholder='search' className={style.input} value={search}/>
+              <input onChange={(e => setSearch(e.target.value))} placeholder='search' className={style.input} value={search} autoFocus/>
             </div>
             <List
               className="demo-loadmore-list"
-              loading={initLoading}
+              loading={isLoading}
               itemLayout="horizontal"
               dataSource={users}
               size='large'

@@ -3,9 +3,11 @@
 import { Avatar, Checkbox, Form, List, Modal, Skeleton } from 'antd'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { FC, useContext, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { addConversation, getConversations, searchUsers } from '../../API/socialWeb'
-import ActiveUserContext from '../../context/ActiveUserContext'
+import { getActiveUser } from '../../store/ducks/activeUser/selectors'
+import { useAppSelector } from '../../store/hooks'
 import { IConversation, IUser } from '../../type/types'
 import MyButton from '../../UI/MyButton/MyButton'
 import Loader from '../Loader/Loader'
@@ -16,11 +18,13 @@ const CheckboxGroup = Checkbox.Group;
 
 const Messages: FC = () => {
 
+const activeUser = useAppSelector(getActiveUser)
+console.log(activeUser)
+
   const navigator = useNavigate()
   const [isLoading, setIsLoading] = useState(true);
   const [checkList, setCheckList] = useState<CheckboxValueType[]>([])
   const [users, setUsers] = useState<IUser[]>([]);
-  const { activeUser } = useContext(ActiveUserContext);
   const [conservations, setConservations] = useState<IConversation[]>([])
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -35,6 +39,7 @@ const Messages: FC = () => {
   const onChangeSearch = async () => {
     if (activeUser?.id) {
       try {
+        setIsLoading(true);;
         const searchedUsersList = await searchUsers(activeUser.id);
         setUsers(searchedUsersList.data)
         setIsLoading(false);;

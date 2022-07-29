@@ -1,11 +1,12 @@
 import React, { FC, useContext } from 'react';
-
-import ActiveUserContext from '../../../../context/ActiveUserContext';
+import { getActiveUser } from '../../../../store/ducks/activeUser/selectors';
+import { useAppSelector } from '../../../../store/hooks';
 
 import styles from './Info.module.css';
 
 const Info: FC = () => {
-  const { activeUser } = useContext(ActiveUserContext);
+  
+  const activeUser = useAppSelector(getActiveUser)
 
   return (
     <div className={styles.info}>

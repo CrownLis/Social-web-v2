@@ -5,7 +5,8 @@ import TextArea from 'antd/lib/input/TextArea'
 import { FC, useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { deleteMessage, getMessages, postMessage } from '../../../API/socialWeb'
-import ActiveUserContext from '../../../context/ActiveUserContext'
+import { getActiveUser } from '../../../store/ducks/activeUser/selectors'
+import { useAppSelector } from '../../../store/hooks'
 import { IMessage } from '../../../type/types'
 import MyButton from '../../../UI/MyButton/MyButton'
 import Loader from '../../Loader/Loader'
@@ -17,10 +18,10 @@ const Dialog: FC = () => {
   const [messages, setMessages] = useState<IMessage[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [message, setMessage] = useState('')
-  const { activeUser } = useContext(ActiveUserContext)
+  const activeUser = useAppSelector(getActiveUser)
 
   const fetchMessages = async () => {
-    console.log(params)
+    setIsLoading(true)
     let x = await getMessages(params.conversationId)
     setMessages(x.data)
     setIsLoading(false)
@@ -28,7 +29,7 @@ const Dialog: FC = () => {
 
   const removeMessage = async (id: number) => {
     await deleteMessage(id)
-    await fetchMessages()
+    setMessages(messages.filter(p => p.id !== id));
   };
 
   const post = async () => {
@@ -60,21 +61,21 @@ const Dialog: FC = () => {
                       className={style.flexNone}
                       avatar={<Avatar src={item.author.avatar} />}
                       title={item.authorId === activeUser?.id ?
-                      <Dropdown  overlay={<Menu className={style.delete}
-                        items={[
-                          {
-                            
-                            key: '1',
-                            label: (
-                              <div onClick={() => removeMessage(item.id)}>delete</div>
-                            ),
-                            
-                          },
-                        ]
-                        }
-                      />}>
-                        <div>{item.text}</div>
-                      </Dropdown> :  <div>{item.text}</div>} 
+                        <Dropdown overlay={<Menu className={style.delete}
+                          items={[
+                            {
+
+                              key: '1',
+                              label: (
+                                <div onClick={() => removeMessage(item.id)}>delete</div>
+                              ),
+
+                            },
+                          ]
+                          }
+                        />}>
+                          <div>{item.text}</div>
+                        </Dropdown> : <div>{item.text}</div>}
                     />
                   </List.Item>
                 )}
