@@ -2,12 +2,13 @@
 
 import { Avatar, Checkbox, Form, List, Modal, Skeleton } from 'antd'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { FC, useContext, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { FC, useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { addConversation, getConversations, searchUsers } from '../../API/socialWeb'
 import { getActiveUser } from '../../store/ducks/activeUser/selectors'
-import { useAppSelector } from '../../store/hooks'
+import { ADD_CONVERSATION, GET_CONVERSATIONS } from '../../store/ducks/dialogs/actions'
+import { getConversationsState } from '../../store/ducks/dialogs/selectors'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { IConversation, IUser } from '../../type/types'
 import MyButton from '../../UI/MyButton/MyButton'
 import Loader from '../Loader/Loader'
@@ -18,56 +19,51 @@ const CheckboxGroup = Checkbox.Group;
 
 const Messages: FC = () => {
 
-const activeUser = useAppSelector(getActiveUser)
-console.log(activeUser)
+  const activeUser = useAppSelector(getActiveUser)
+  const dialogs:IConversation[] = useAppSelector(getConversationsState)
+  const dispatch = useAppDispatch()
 
   const navigator = useNavigate()
   const [isLoading, setIsLoading] = useState(true);
   const [checkList, setCheckList] = useState<CheckboxValueType[]>([])
   const [users, setUsers] = useState<IUser[]>([]);
-  const [conservations, setConservations] = useState<IConversation[]>([])
   const [visible, setVisible] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
 
   const fetchConservations = async () => {
     setIsLoading(true)
-    const List = await getConversations()
-    setConservations(List.data)
+    dispatch({ type: GET_CONVERSATIONS, payload: (await getConversations()).data })
     setIsLoading(false);
   }
-
+  console.log(dialogs)
   const onChangeSearch = async () => {
     if (activeUser?.id) {
       try {
-        setIsLoading(true);;
+        setIsLoading(true);
         const searchedUsersList = await searchUsers(activeUser.id);
         setUsers(searchedUsersList.data)
-        setIsLoading(false);;
+        setIsLoading(false);
       }
       catch {
         console.log('error')
       }
     }
   }
-
   const onChange = (list: CheckboxValueType[]) => {
     setCheckList(list)
   };
 
   const showModal = () => {
+    setIsLoading(true)
     setVisible(true);
     onChangeSearch()
+    setIsLoading(false)
   };
 
   const addDialog = async () => {
-    console.log(checkList)
     let obj = {
-      "participantIds":checkList
+      "participantIds": checkList
     }
-    console.log(obj)
-    let x = await addConversation(obj)
-    console.log(x)
-    navigator(`/messages/${x.data.id}`)
+    dispatch({type:ADD_CONVERSATION,payload:(await addConversation(obj)).data})
   }
 
   const handleCancel = () => {
@@ -79,62 +75,61 @@ console.log(activeUser)
     fetchConservations()
   }, [])
 
-
-  if (conservations) {
+  if (dialogs) {
     return (
-      <div className={style.userList}>
-        <MyButton onClick={showModal}>Create dialog</MyButton>
-        <Modal
-          title="Create dialog"
-          visible={visible}
-          confirmLoading={confirmLoading}
-          footer={null}
-          closable={false}
-        >
-          <Form
-            onFinish={showModal}
+      isLoading ?
+        <Loader />
+        :
+        (
+          <div className={style.userList}>
+            <MyButton onClick={showModal}>Create dialog</MyButton>
+            <Modal
+              title="Create dialog"
+              visible={visible}
+              confirmLoading={isLoading}
+              footer={null}
+              closable={false}
+            >
+              <Form
+                onFinish={showModal}
 
-          >
-            <Form.Item>
-              <CheckboxGroup onChange={onChange} className={style.checkbox}>
-                <List
-                  className="demo-loadmore-list"
-                  loading={isLoading}
-                  itemLayout="horizontal"
-                  dataSource={users}
-                  size='large'
-                  renderItem={item => (
-                    <List.Item
-                    >
-                      <div>
-                        <label htmlFor={`${item.id}`}>
-                          <List.Item.Meta className={style.title}
-                            avatar={<Avatar src={item.avatar} className={style.avatar} />}
-                            title={`${item.firstName} ${item.lastName}`}
-                          />
-                        </label>
-                        </div>
-                        <div>
-                        <Checkbox value={item.id} id={`${item.id}`}>Add to group</Checkbox>
-                        </div>
-                    </List.Item>)}
-                />
-                </CheckboxGroup>
-            </Form.Item>
-            <Form.Item className={style.btn}>
-              <MyButton type="primary" htmlType="submit" onClick={addDialog}>
-                Create
-              </MyButton>
-              <MyButton type="primary" htmlType="button" onClick={handleCancel}>
-                Cancel
-              </MyButton>
-            </Form.Item>
-          </Form>
-        </Modal>
-        {isLoading ? (
-          <Loader />
-        ) :
-          (
+              >
+                <Form.Item>
+                  <CheckboxGroup onChange={onChange} className={style.checkbox}>
+                    <List
+                      className="demo-loadmore-list"
+                      loading={isLoading}
+                      itemLayout="horizontal"
+                      dataSource={users}
+                      size='large'
+                      renderItem={item => (
+                        <List.Item
+                        >
+                          <div>
+                            <label htmlFor={`${item.id}`}>
+                              <List.Item.Meta className={style.title}
+                                avatar={<Avatar src={item.avatar} className={style.avatar} />}
+                                title={`${item.firstName} ${item.lastName}`}
+                              />
+                            </label>
+                          </div>
+                          <div>
+                            <Checkbox value={item.id} id={`${item.id}`}>Add to group</Checkbox>
+                          </div>
+                        </List.Item>)}
+                    />
+                  </CheckboxGroup>
+                </Form.Item>
+                <Form.Item className={style.btn}>
+                  <MyButton type="primary" htmlType="submit" onClick={addDialog}>
+                    Create
+                  </MyButton>
+                  <MyButton type="primary" htmlType="button" onClick={handleCancel}>
+                    Cancel
+                  </MyButton>
+                </Form.Item>
+              </Form>
+            </Modal>
             <div>
               <div
                 style={{
@@ -147,9 +142,9 @@ console.log(activeUser)
                   className="demo-loadmore-list"
                   loading={isLoading}
                   itemLayout="horizontal"
-                  dataSource={conservations}
+                  dataSource={dialogs}
                   size='large'
-                  renderItem={item => (
+                  renderItem={item => ( 
                     <List.Item
                     >
                       <Skeleton avatar title={false} loading={false} active >
@@ -162,9 +157,8 @@ console.log(activeUser)
                 />
               </div>
             </div>
-          )
-        }
-      </div>
+          </div>
+        )
     )
   } else {
     return (

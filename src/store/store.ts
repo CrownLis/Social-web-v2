@@ -1,10 +1,14 @@
 
 import { applyMiddleware, combineReducers, createStore } from 'redux';
-import { activeUserReducer } from './ducks/activeUser/reducers';
+import { authReducer } from './ducks/activeUser/reducers';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { dialogsReducer } from './ducks/dialogs/reducers';
+import { postsReducer } from './ducks/posts/reducers';
 
 export const rootReducer = combineReducers({
-    auth: activeUserReducer,
+    auth: authReducer,
+    dialogs:dialogsReducer,
+    posts:postsReducer
 });
 
 export default function configureStore() {

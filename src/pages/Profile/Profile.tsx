@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { Form, Input, Modal } from 'antd';
 
 import Posts from './components/Posts/Posts';
@@ -6,7 +6,6 @@ import Info from './components/Info/Info';
 import { editUser } from '../../API/socialWeb';
 
 import styles from './Profile.module.css';
-import Loader from '../Loader/Loader';
 import MyButton from '../../UI/MyButton/MyButton';
 import { useForm } from 'antd/lib/form/Form';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -116,7 +115,7 @@ const Profile: FC = () => {
             <div className={styles.name}>{`${activeUser?.firstName} ${activeUser?.lastName}`}</div>
             <Info/>
             <div className={styles.posts}>
-              <Posts users={activeUser} />
+              <Posts/>
             </div>
           </div>
       </div>

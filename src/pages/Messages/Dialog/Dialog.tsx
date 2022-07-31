@@ -2,11 +2,13 @@
 
 import { Avatar, Dropdown, Form, Input, List, Menu } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
-import { FC, useContext, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { deleteMessage, getMessages, postMessage } from '../../../API/socialWeb'
 import { getActiveUser } from '../../../store/ducks/activeUser/selectors'
-import { useAppSelector } from '../../../store/hooks'
+import { ADD_MESSAGE, DELETE_MESSAGE, GET_MESSAGES } from '../../../store/ducks/dialogs/actions'
+import { getDialogMessages } from '../../../store/ducks/dialogs/selectors'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { IMessage } from '../../../type/types'
 import MyButton from '../../../UI/MyButton/MyButton'
 import Loader from '../../Loader/Loader'
@@ -14,31 +16,29 @@ import Loader from '../../Loader/Loader'
 import style from './Dialog.module.css'
 
 const Dialog: FC = () => {
+
+  const dispatch = useAppDispatch()
+  const messages:IMessage[] = useAppSelector(getDialogMessages)
   const params = useParams()
-  const [messages, setMessages] = useState<IMessage[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [message, setMessage] = useState('')
   const activeUser = useAppSelector(getActiveUser)
 
   const fetchMessages = async () => {
     setIsLoading(true)
-    let x = await getMessages(params.conversationId)
-    setMessages(x.data)
+    dispatch({type:GET_MESSAGES,payload:(await getMessages(params.conversationId)).data})
     setIsLoading(false)
   }
 
   const removeMessage = async (id: number) => {
-    await deleteMessage(id)
-    setMessages(messages.filter(p => p.id !== id));
+    dispatch({type:DELETE_MESSAGE,payload:id});
   };
 
   const post = async () => {
-    let id = params.conversationId
-    if (id) {
-      let msg = { text: message, conversationId: id }
-      await postMessage(msg)
+    if (params.conversationId) {
+      let msg = { text: message, conversationId: params.conversationId }
+      dispatch({type:ADD_MESSAGE,payload:msg})
       setMessage('')
-      fetchMessages()
     }
   }
 
