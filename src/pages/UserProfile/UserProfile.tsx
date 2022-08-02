@@ -3,9 +3,9 @@ import { IPost, IUser } from '../../type/types';
 import { getPosts, getUser } from '../../API/socialWeb';
 import { useParams } from 'react-router-dom';
 
-import UsersInfo from './UsersInfo/UsersInfo';
+import UsersInfo from './Components/UsersInfo/UsersInfo';
 import Loader from '../Loader/Loader';
-import UserPosts from './UserPosts/UserPosts';
+import UserPosts from './Components/UserPosts/UserPosts';
 
 import style from './UserProfile.module.css';
 

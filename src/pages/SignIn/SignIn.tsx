@@ -3,7 +3,8 @@ import { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import socialWebApi, { signIn } from '../../API/socialWeb';
-import { SET_USER } from '../../store/ducks/activeUser/actions';
+import { SET_ACTIVE_USER } from '../../store/ducks/auth/actions';
+import { setActiveUser } from '../../store/ducks/auth/asyncActions';
 import { useAppDispatch } from '../../store/hooks';
 import MyButton from '../../UI/MyButton/MyButton';
 
@@ -20,7 +21,7 @@ const SignIn: FC = () => {
     const response = await signIn(values)
     localStorage.setItem('access_token', response.data.access_token)
     socialWebApi.defaults.headers.common['Authorization'] = ` Bearer ${localStorage.getItem('access_token')}`;
-    dispatch({type:SET_USER,payload:response.data.user})
+    dispatch(setActiveUser(values))
     navigation('/Profile')
   };
 

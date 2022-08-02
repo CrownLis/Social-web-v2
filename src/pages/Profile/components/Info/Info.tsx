@@ -1,12 +1,12 @@
-import React, { FC, useContext } from 'react';
-import { getActiveUser } from '../../../../store/ducks/activeUser/selectors';
+import { FC } from 'react';
+import { getAuth } from '../../../../store/ducks/auth/selectors';
 import { useAppSelector } from '../../../../store/hooks';
 
 import styles from './Info.module.css';
 
 const Info: FC = () => {
   
-  const activeUser = useAppSelector(getActiveUser)
+  const activeUser = useAppSelector(getAuth)
 
   return (
     <div className={styles.info}>

@@ -9,14 +9,14 @@ import styles from './Profile.module.css';
 import MyButton from '../../UI/MyButton/MyButton';
 import { useForm } from 'antd/lib/form/Form';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { getActiveUser } from '../../store/ducks/activeUser/selectors';
-import { SET_USER } from '../../store/ducks/activeUser/actions';
+import { getAuth } from '../../store/ducks/auth/selectors';
+import { editActiveUser } from '../../store/ducks/auth/asyncActions';
 
 const Profile: FC = () => {
 
   const dispatch = useAppDispatch()
   const [form] = useForm()
-  const activeUser = useAppSelector(getActiveUser)
+  const activeUser = useAppSelector(getAuth)
 
   const showModal = () => {
     setVisible(true);
@@ -37,9 +37,8 @@ const Profile: FC = () => {
       })
     }
     const newUser = await editUser(form.getFieldsValue())
-    dispatch({type:SET_USER,payload:newUser.data})
-    setVisible(false);
-    setConfirmLoading(false);
+    dispatch(editActiveUser(newUser.data))
+    setVisible(false);;
   };
 
   const handleCancel = () => {

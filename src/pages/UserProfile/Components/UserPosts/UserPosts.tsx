@@ -2,7 +2,7 @@
 import { FC, useEffect, useState } from 'react';
 
 import styles from './UserPosts.module.css';
-import { IPost } from '../../../type/types';
+import { IPost } from '../../../../type/types';
 import UserPost from './UserPost/UserPost';
 
 interface PostsProps {

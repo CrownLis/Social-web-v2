@@ -19,6 +19,9 @@
     flex-direction: row-reverse;
 }
 
+:global(.ant-list-split .ant-list-item).right {
+    justify-content: right;
+}
 
 .flexNone:global(.ant-list-item-meta){
     flex:none

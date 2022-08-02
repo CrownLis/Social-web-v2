@@ -1,4 +1,4 @@
-import { FC, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Avatar, List, Skeleton } from 'antd';
 import _ from 'lodash'
 
@@ -6,16 +6,18 @@ import Loader from '../Loader/Loader';
 import { IUser } from '../../type/types';
 
 import style from './Users.module.css';
-import { searchUsers } from '../../API/socialWeb';
 import { NavLink } from 'react-router-dom';
-import { useAppSelector } from '../../store/hooks';
-import { getActiveUser } from '../../store/ducks/activeUser/selectors';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getAuth } from '../../store/ducks/auth/selectors';
+import { getUsersLoading, getUsersState } from '../../store/ducks/users/selectors';
+import { getUsers } from '../../store/ducks/users/asyncActions';
 
 const Users: FC = () => {
   const [search, setSearch] = useState('')
-  const activeUser = useAppSelector(getActiveUser)
-  const [users, setUsers] = useState<IUser[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const activeUser = useAppSelector(getAuth)
+  const users = useAppSelector(getUsersState)
+  const isLoading = useAppSelector(getUsersLoading)
+  const dispatch = useAppDispatch()
 
   const debounceImpl = (cb: any, delay: number) => {
     let isDebounced: any = null;
@@ -31,13 +33,9 @@ const Users: FC = () => {
   );
 
   const fetchUsers = async () => {
-    setIsLoading(true)
     if (activeUser?.id) {
       try {
-
-        const searchedUsers = await searchUsers(activeUser.id, search)
-        setUsers(searchedUsers.data)
-        setIsLoading(false);
+        dispatch(getUsers(activeUser))
       }
       catch {
         console.log('error')
@@ -80,7 +78,7 @@ const Users: FC = () => {
               itemLayout="horizontal"
               dataSource={users}
               size='large'
-              renderItem={item => (
+              renderItem={(item:IUser) => (
                 <List.Item
                 >
                   <Skeleton avatar title={false} loading={false} active >

@@ -1,10 +1,10 @@
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import Pineapple from '../../assets/images/pineapple.png';
-import { SET_USER } from '../../store/ducks/activeUser/actions';
-import { getActiveUser } from '../../store/ducks/activeUser/selectors';
+import { setActiveUser } from '../../store/ducks/auth/asyncActions';
+import { getAuth } from '../../store/ducks/auth/selectors';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import MyButton from '../../UI/MyButton/MyButton';
 
@@ -15,12 +15,12 @@ interface MyHeaderProps {}
 const MyHeader: FC<MyHeaderProps> = () => { 
   const navigator = useNavigate()
 const dispatch = useAppDispatch()
-const activeUser = useAppSelector(getActiveUser)
+const activeUser = useAppSelector(getAuth)
 
   const logOut = () => {
     localStorage.removeItem('access_token')
     navigator('/SignIn')
-    dispatch({type:SET_USER,payload:null})
+    dispatch(setActiveUser(null))
   }
 
   return (

@@ -2,11 +2,10 @@
 import { Form } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import TextArea from 'antd/lib/input/TextArea';
-import { FC, useEffect, useState } from 'react';
-import { addPost, deletePost, getPosts } from '../../../../API/socialWeb';
-import { getActiveUser } from '../../../../store/ducks/activeUser/selectors';
-import { ADD_POSTS, DELETE_POST, GET_POSTS } from '../../../../store/ducks/posts/actions';
-import { getPostsState } from '../../../../store/ducks/posts/selectors';
+import { FC, useEffect } from 'react';
+import { getAuth } from '../../../../store/ducks/auth/selectors';
+import { addNewPosts, deletePosts, getUserPosts } from '../../../../store/ducks/posts/asyncActions';
+import { getPostsLoading, getPostsState } from '../../../../store/ducks/posts/selectors';
 
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 
@@ -18,35 +17,32 @@ import styles from './Posts.module.css';
 
 
 const Posts: FC = () => {
-
-  const activeUser = useAppSelector(getActiveUser)
+  const isLoading = useAppSelector(getPostsLoading)
+  const activeUser = useAppSelector(getAuth)
   const dispatch = useAppDispatch()
-  const postsState = useAppSelector(getPostsState)
   const [form] = useForm()
-  const [isLoading, setIsLoading] = useState(true);
+  const postsState = useAppSelector(getPostsState)
+
+
+const fetchPosts = () => {
+  console.log(activeUser)
+dispatch(getUserPosts(activeUser))
+}
 
   const removePost = async (id: number) => {
-    setIsLoading(true)
-    dispatch({type:DELETE_POST,payload:id});
-    setIsLoading(false)
+  dispatch(deletePosts(id))
   };
 
-  const fetchPosts = async () => {
-    setIsLoading(true)
-    dispatch({ type: GET_POSTS, payload: (await getPosts(activeUser.id)).data })
-    setIsLoading(false)
-  }
-
   const addNewPost = async (values: {}) => {
-    setIsLoading(true)
-    dispatch({type: ADD_POSTS, payload:(await addPost(values)).data})
+   dispatch(addNewPosts(values))
     form.resetFields()
-    setIsLoading(false)
   };
 
   useEffect(() => {
-    fetchPosts()
+   fetchPosts()
   }, [])
+
+  
   return (
     isLoading ? <Loader /> : (
       <div className={styles.posts}>
@@ -85,5 +81,5 @@ const Posts: FC = () => {
       </div>
     )
   );
-};
+}
 export default Posts;

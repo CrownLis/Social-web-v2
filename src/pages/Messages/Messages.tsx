@@ -3,11 +3,12 @@
 import { Avatar, Checkbox, Form, List, Modal, Skeleton } from 'antd'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { FC, useEffect, useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
-import { addConversation, getConversations, searchUsers } from '../../API/socialWeb'
-import { getActiveUser } from '../../store/ducks/activeUser/selectors'
-import { ADD_CONVERSATION, GET_CONVERSATIONS } from '../../store/ducks/dialogs/actions'
-import { getConversationsState } from '../../store/ducks/dialogs/selectors'
+import { NavLink } from 'react-router-dom'
+import { getAuth } from '../../store/ducks/auth/selectors'
+import { addUserConversations, getUserConversations } from '../../store/ducks/dialogs/asyncActions'
+import { getConversationsLoading, getConversationsState } from '../../store/ducks/dialogs/selectors'
+import { getUsers } from '../../store/ducks/users/asyncActions'
+import { getUsersState } from '../../store/ducks/users/selectors'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { IConversation, IUser } from '../../type/types'
 import MyButton from '../../UI/MyButton/MyButton'
@@ -19,29 +20,23 @@ const CheckboxGroup = Checkbox.Group;
 
 const Messages: FC = () => {
 
-  const activeUser = useAppSelector(getActiveUser)
-  const dialogs:IConversation[] = useAppSelector(getConversationsState)
+  const activeUser = useAppSelector(getAuth)
+  const dialogs: IConversation[] = useAppSelector(getConversationsState)
   const dispatch = useAppDispatch()
 
-  const navigator = useNavigate()
-  const [isLoading, setIsLoading] = useState(true);
+  const isLoading = useAppSelector(getConversationsLoading)
   const [checkList, setCheckList] = useState<CheckboxValueType[]>([])
-  const [users, setUsers] = useState<IUser[]>([]);
+  const users = useAppSelector(getUsersState)
   const [visible, setVisible] = useState(false);
 
   const fetchConservations = async () => {
-    setIsLoading(true)
-    dispatch({ type: GET_CONVERSATIONS, payload: (await getConversations()).data })
-    setIsLoading(false);
+    dispatch(getUserConversations())
   }
   console.log(dialogs)
   const onChangeSearch = async () => {
     if (activeUser?.id) {
       try {
-        setIsLoading(true);
-        const searchedUsersList = await searchUsers(activeUser.id);
-        setUsers(searchedUsersList.data)
-        setIsLoading(false);
+        dispatch(getUsers(activeUser))
       }
       catch {
         console.log('error')
@@ -53,17 +48,16 @@ const Messages: FC = () => {
   };
 
   const showModal = () => {
-    setIsLoading(true)
     setVisible(true);
     onChangeSearch()
-    setIsLoading(false)
   };
 
   const addDialog = async () => {
     let obj = {
       "participantIds": checkList
     }
-    dispatch({type:ADD_CONVERSATION,payload:(await addConversation(obj)).data})
+    dispatch(addUserConversations(obj))
+    setVisible(false);
   }
 
   const handleCancel = () => {
@@ -102,7 +96,7 @@ const Messages: FC = () => {
                       itemLayout="horizontal"
                       dataSource={users}
                       size='large'
-                      renderItem={item => (
+                      renderItem={(item:IUser) => (
                         <List.Item
                         >
                           <div>
@@ -144,7 +138,7 @@ const Messages: FC = () => {
                   itemLayout="horizontal"
                   dataSource={dialogs}
                   size='large'
-                  renderItem={item => ( 
+                  renderItem={item => (
                     <List.Item
                     >
                       <Skeleton avatar title={false} loading={false} active >

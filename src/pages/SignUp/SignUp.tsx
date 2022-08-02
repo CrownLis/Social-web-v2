@@ -5,17 +5,17 @@ import  { useNavigate } from 'react-router-dom'
 
 import style from './SignUp.module.css';
 import MyButton from '../../UI/MyButton/MyButton';
+import { useAppDispatch } from '../../store/hooks';
+import { addNewUsers } from '../../store/ducks/users/asyncActions';
 
 const SignUp: FC = () => {
   
 
 const navigation = useNavigate()
+const dispatch = useAppDispatch()
 
   const onFinish = async (values: { avatar: any; }) => {
-    console.log(values)
-    await signUp({
-      ...values,
-    avatar: values?.avatar || 'https://инобр.рф/upload/iblock/61f/no-avatar-8.png'})
+    dispatch(addNewUsers(values))
     navigation('/signIn')
   };
 

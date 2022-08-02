@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { IPost } from '../../../../type/types';
+import { IPost } from './../../../../../type/types';
 
 
 import style from './UserPost.module.css'

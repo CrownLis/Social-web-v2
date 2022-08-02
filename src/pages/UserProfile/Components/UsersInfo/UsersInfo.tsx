@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { IUser } from '../../../type/types';
+import { IUser } from '../../../../type/types';
 import style from './UsersInfo.module.css';
 
 const UsersInfo: FC<IUser> = ({ firstName, lastName, id, avatar, email }) => {

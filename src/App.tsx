@@ -4,8 +4,8 @@ import { TeamOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import { authMe } from './API/socialWeb';
 import { useAppDispatch, useAppSelector } from './store/hooks';
-import { SET_USER } from './store/ducks/activeUser/actions';
-import { getActiveUser } from './store/ducks/activeUser/selectors';
+import { SET_ACTIVE_USER } from './store/ducks/auth/actions';
+import { getAuth } from './store/ducks/auth/selectors';
 
 import MyHeader from './components/Header/MyHeader';
 import Guest from './pages/Guest/Guest';
@@ -30,7 +30,7 @@ const App: FC = () => {
   const { Header, Content, Sider } = Layout;
   
   const dispatch = useAppDispatch()
-  const activeUser = useAppSelector(getActiveUser)
+  const activeUser = useAppSelector(getAuth)
   const [isLoading, setIsLoading] = useState(true);
 
 
@@ -39,7 +39,7 @@ const App: FC = () => {
   const active = async () => {
     setIsLoading(true)
     const activeID = await authMe();
-    dispatch({type:SET_USER,payload:activeID?.data})
+    dispatch({type:SET_ACTIVE_USER,payload:activeID?.data})
     setIsLoading(false)
   }
 
