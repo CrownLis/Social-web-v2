@@ -8,12 +8,16 @@ export interface UsersState {
   isLoading: boolean
   users: IUser[] | null
   error: any
+  page:number
+  limit:number
 }
 
 const PostsInitialState: UsersState = {
-  users: null,
+  users: [],
   isLoading: true,
-  error: null
+  error: null,
+  page:1,
+  limit:10
 }
 
 export const usersReducer = (state: UsersState = PostsInitialState, action: any) => {

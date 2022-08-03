@@ -41,12 +41,9 @@ export const getUser = async (id: string) => {
     return await socialWebApi.get(`/users/${id}`)
 }
 
-export const searchUsers = async (activeId: number, queryParams?: string) => {
-    let q = `?filter=id||$ne||${activeId}`
-    if (queryParams) {
-        q = `?filter=id||$ne||${activeId}&filter=firstName||$starts||${queryParams}`
-    }
-    return await socialWebApi.get(`/users${q}`)
+export const searchUsers = async (activeId: number,page?:number,limit?:number,search?: string) => {
+   return search? await socialWebApi.get(`/users?filter=id||$ne||${activeId}&limit=${limit}&page=${page}&filter=firstName||$starts||${search}`) :
+   await socialWebApi.get(`/users?filter=id||$ne||${activeId}&limit=${limit}&page=${page}`)
 }
 
 export const addConversation = async (values: Record<string, any>) => {

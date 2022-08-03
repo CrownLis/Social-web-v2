@@ -24,25 +24,24 @@ const Posts: FC = () => {
   const postsState = useAppSelector(getPostsState)
 
 
-const fetchPosts = () => {
-  console.log(activeUser)
-dispatch(getUserPosts(activeUser))
-}
+  const fetchPosts = () => {
+    dispatch(getUserPosts(activeUser))
+  }
 
   const removePost = async (id: number) => {
-  dispatch(deletePosts(id))
+    dispatch(deletePosts(id))
   };
 
   const addNewPost = async (values: {}) => {
-   dispatch(addNewPosts(values))
+    dispatch(addNewPosts(values))
     form.resetFields()
   };
 
   useEffect(() => {
-   fetchPosts()
+    fetchPosts()
   }, [])
 
-  
+
   return (
     isLoading ? <Loader /> : (
       <div className={styles.posts}>

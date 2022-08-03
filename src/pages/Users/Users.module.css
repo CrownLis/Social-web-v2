@@ -38,3 +38,6 @@ flex-direction: column;
    display:flex;
    justify-content: center;
 }
+:global(.ant-list) {
+   height: 570px; overflow: auto; padding: 0px 16px;
+}

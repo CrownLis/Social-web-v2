@@ -7,9 +7,9 @@ import { IUser } from '../../type/types';
 
 import style from './Users.module.css';
 import { NavLink } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector, useScroll } from '../../store/hooks';
 import { getAuth } from '../../store/ducks/auth/selectors';
-import { getUsersLoading, getUsersState } from '../../store/ducks/users/selectors';
+import { getUsersLimit, getUsersLoading, getUsersPage, getUsersState } from '../../store/ducks/users/selectors';
 import { getUsers } from '../../store/ducks/users/asyncActions';
 
 const Users: FC = () => {
@@ -18,6 +18,11 @@ const Users: FC = () => {
   const users = useAppSelector(getUsersState)
   const isLoading = useAppSelector(getUsersLoading)
   const dispatch = useAppDispatch()
+  const parentRef: any = useRef()
+  const childRef: any = useRef()
+  const page = useAppSelector(getUsersPage)
+  const limit = useAppSelector(getUsersLimit)
+  // const intersected = useScroll(parentRef, childRef, () => fetchUsers())
 
   const debounceImpl = (cb: any, delay: number) => {
     let isDebounced: any = null;
@@ -32,10 +37,10 @@ const Users: FC = () => {
     300
   );
 
-  const fetchUsers = async () => {
+  const fetchUsers = () => {
     if (activeUser?.id) {
       try {
-        dispatch(getUsers(activeUser))
+        dispatch(getUsers(activeUser,page,limit,search))
       }
       catch {
         console.log('error')
@@ -62,26 +67,19 @@ const Users: FC = () => {
         <Loader />
       ) : (
         <div>
-          <div
-            style={{
-              height: 670,
-              overflow: 'auto',
-              padding: '0 16px',
-            }}
-          >
             <div className={style.inputContainer}>
-              <input onChange={(e => setSearch(e.target.value))} placeholder='search' className={style.input} value={search} autoFocus/>
+              <input onChange={(e => setSearch(e.target.value))} placeholder='search' className={style.input} value={search} autoFocus />
             </div>
             <List
               className="demo-loadmore-list"
-              loading={isLoading}
+              loading={false}
               itemLayout="horizontal"
               dataSource={users}
               size='large'
-              renderItem={(item:IUser) => (
+              renderItem={(item: IUser) => (
                 <List.Item
                 >
-                  <Skeleton avatar title={false} loading={false} active >
+                  <Skeleton avatar title={false} loading={isLoading} active >
                     <List.Item.Meta className={style.title}
                       avatar={<Avatar src={item.avatar} className={style.avatar} />}
                       title={<NavLink to={`/users/${item.id}`} > {`${item.firstName} ${item.lastName}`}</NavLink>}
@@ -91,7 +89,6 @@ const Users: FC = () => {
               )}
             />
           </div>
-        </div>
       )
       }
     </div>

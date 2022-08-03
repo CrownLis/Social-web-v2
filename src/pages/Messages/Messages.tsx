@@ -8,7 +8,7 @@ import { getAuth } from '../../store/ducks/auth/selectors'
 import { addUserConversations, getUserConversations } from '../../store/ducks/dialogs/asyncActions'
 import { getConversationsLoading, getConversationsState } from '../../store/ducks/dialogs/selectors'
 import { getUsers } from '../../store/ducks/users/asyncActions'
-import { getUsersState } from '../../store/ducks/users/selectors'
+import { getUsersLimit, getUsersPage, getUsersState } from '../../store/ducks/users/selectors'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { IConversation, IUser } from '../../type/types'
 import MyButton from '../../UI/MyButton/MyButton'
@@ -28,6 +28,8 @@ const Messages: FC = () => {
   const [checkList, setCheckList] = useState<CheckboxValueType[]>([])
   const users = useAppSelector(getUsersState)
   const [visible, setVisible] = useState(false);
+  const page = useAppSelector(getUsersPage)
+  const limit = useAppSelector(getUsersLimit)
 
   const fetchConservations = async () => {
     dispatch(getUserConversations())
@@ -36,7 +38,7 @@ const Messages: FC = () => {
   const onChangeSearch = async () => {
     if (activeUser?.id) {
       try {
-        dispatch(getUsers(activeUser))
+        dispatch(getUsers(activeUser,page,limit))
       }
       catch {
         console.log('error')
@@ -144,6 +146,7 @@ const Messages: FC = () => {
                       <Skeleton avatar title={false} loading={false} active >
                         <List.Item.Meta className={style.title}
                           title={<NavLink to={`/messages/${item.id}`}>{item.id}</NavLink>}
+                          description={`${item.lastMessage}`}
                         />
                       </Skeleton>
                     </List.Item>

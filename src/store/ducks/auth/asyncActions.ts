@@ -9,7 +9,7 @@ export const setActiveUser = (values:{} | null) => {
             dispatch(setActiveUserStarted(true))
             if (values !== null) {
             const response = await signIn(values)
-            dispatch(setActiveUserSuccess(response.data))
+            dispatch(setActiveUserSuccess(response.data.user))
             } else {
               dispatch(setActiveUserSuccess(null))
             }
@@ -38,9 +38,9 @@ const setActiveUserStarted = (state:boolean) => ({
 
   const setActiveUserSuccess = (user:IUser | null) => ({
     type: SET_ACTIVE_USER,
-    payload: {
-      ...user
-    }
+    payload: 
+    user
+
   });
 
   export const editActiveUser = (values:{}) => {

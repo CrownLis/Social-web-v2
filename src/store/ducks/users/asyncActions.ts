@@ -2,12 +2,12 @@ import { searchUsers, signUp } from '../../../API/socialWeb';
 import { IUser } from '../../../type/types';
 import { ADD_USER, GET_USERS, SET_LOADING_USERS, USERS_FAILURE } from './actions';
 
-export const getUsers = (user: IUser) => {
+export const getUsers = (user: IUser,page:number,limit:number,search?:string) => {
     return async (dispatch: (arg0: { type: string; payload?: any }) => void) => {
         try {
             dispatch(getUsersStarted(true))
-            const response = await searchUsers(user.id)
-            dispatch(getUsersSuccess(response.data))
+            const response = await searchUsers(user.id,page,limit,search)
+            dispatch(getUsersSuccess(response.data.data))
         } catch (error) {
             dispatch(UsersFailure(error))  
         }
