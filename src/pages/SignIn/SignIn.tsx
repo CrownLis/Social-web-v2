@@ -19,7 +19,6 @@ const SignIn: FC = () => {
 
   const onFinish = async (values: {}) => {
     const response = await signIn(values)
-    console.log(response)
     localStorage.setItem('access_token', response.data.access_token)
     socialWebApi.defaults.headers.common['Authorization'] = ` Bearer ${localStorage.getItem('access_token')}`;
     dispatch(setActiveUser(values))

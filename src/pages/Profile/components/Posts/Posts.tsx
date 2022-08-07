@@ -25,7 +25,7 @@ const Posts: FC = () => {
 
 
   const fetchPosts = () => {
-    dispatch(getUserPosts(activeUser))
+    dispatch(getUserPosts(activeUser.id))
   }
 
   const removePost = async (id: number) => {

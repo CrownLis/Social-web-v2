@@ -1,6 +1,5 @@
 import { GET_MESSAGES, SET_LOADING_MESSAGES, MESSAGES_FAILURE, ADD_MESSAGE, DELETE_MESSAGE } from './actions';
 
-import { IMessage } from '../../../type/types'
 import { deleteMessage, getMessages, postMessage } from '../../../API/socialWeb'
 
 export const getConversationMessages = (id:any) => {
@@ -17,6 +16,37 @@ export const getConversationMessages = (id:any) => {
             dispatch(setMessagesStarted(false))
         }
     }
+};
+
+
+export const addNewMessage = (values:{text:string,conversationId:string}) => {
+    return async (dispatch: (arg0: { type: string; payload: any; }) => any) => {
+        try {
+            dispatch(setMessagesStarted(true))
+            const response = await postMessage(values)
+            dispatch(addMessageSuccess(response.data))
+        } catch (error) {
+            dispatch(setMessagesFailure(error))  
+        }
+        finally {
+            dispatch(setMessagesStarted(false))
+        }
+    }
+};
+
+export const deleteMessages = (id:number) => {
+  return async (dispatch: (arg0: { type: string; payload: any; }) => any) => {
+      try {
+          dispatch(setMessagesStarted(true))
+          await deleteMessage(id)
+          dispatch(deleteMessageSuccess(id))
+      } catch (error) {
+          dispatch(setMessagesFailure(error))  
+      }
+      finally {
+          dispatch(setMessagesStarted(false))
+      }
+  }
 };
 
 const setMessagesStarted = (state:boolean) => ({
@@ -51,33 +81,3 @@ const setMessagesStarted = (state:boolean) => ({
     payload:
       message
   });
-
-  export const addNewMessage = (values:{text:string,conversationId:string}) => {
-    return async (dispatch: (arg0: { type: string; payload: any; }) => any) => {
-        try {
-            dispatch(setMessagesStarted(true))
-            const response = await postMessage(values)
-            dispatch(addMessageSuccess(response.data))
-        } catch (error) {
-            dispatch(setMessagesFailure(error))  
-        }
-        finally {
-            dispatch(setMessagesStarted(false))
-        }
-    }
-};
-
-export const deleteMessages = (id:number) => {
-  return async (dispatch: (arg0: { type: string; payload: any; }) => any) => {
-      try {
-          dispatch(setMessagesStarted(true))
-          await deleteMessage(id)
-          dispatch(deleteMessageSuccess(id))
-      } catch (error) {
-          dispatch(setMessagesFailure(error))  
-      }
-      finally {
-          dispatch(setMessagesStarted(false))
-      }
-  }
-};

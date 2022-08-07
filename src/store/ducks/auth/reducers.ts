@@ -1,25 +1,34 @@
 
 import { IUser } from "../../../type/types";
-import { SET_ACTIVE_USER } from "./actions";
+import { ACTIVE_USER_FAILURE, SET_ACTIVE_USER, SET_LOADING_ACTIVE_USER, SET_LOADING_CHECK } from "./actions";
 
 
-export interface AuthState{
-    activeUser: IUser | null;
-    error:any
-    isLoading:boolean
-  }
-
-const authInitialState: AuthState = {
-    activeUser: null,
-    error:null,
-    isLoading:true
+export interface AuthState {
+  activeUser: IUser | null;
+  error: any
+  isLoading: boolean
+  isLoadingAuth: boolean
 }
 
-export const authReducer = (state:AuthState= authInitialState,action:any) => {
-    switch (action.type) {
-          case SET_ACTIVE_USER: 
-          return {...state, activeUser: action.payload}
-        default:
-        return state
-    }
-    }
+const authInitialState: AuthState = {
+  activeUser: null,
+  error: null,
+  isLoading: true,
+  isLoadingAuth: true,
+
+}
+
+export const authReducer = (state: AuthState = authInitialState, action: any) => {
+  switch (action.type) {
+    case SET_ACTIVE_USER:
+      return { ...state, activeUser: action.payload }
+    case ACTIVE_USER_FAILURE:
+      return { ...state, isLoading: false, error: action.payload.error }
+    case SET_LOADING_ACTIVE_USER:
+      return { ...state, isLoading: action.payload }
+    case SET_LOADING_CHECK:
+      return { ...state, isLoadingAuth: action.payload }
+    default:
+      return state
+  }
+}

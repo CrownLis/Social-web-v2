@@ -17,7 +17,7 @@ export const authMe = async () => {
     if (localStorage.getItem('access_token')) {
         return await socialWebApi.get('/auth/me')
     } else {
-        console.log('Пользователь не авторизован')
+        throw new Error('Пользователь не авторизован');
     }
 }
 
@@ -37,13 +37,13 @@ export const deleteMessage = async (id: number) => {
     return await socialWebApi.delete(`/messages/${id}`)
 }
 
-export const getUser = async (id: string) => {
+export const getUser = async (id: string | number) => {
     return await socialWebApi.get(`/users/${id}`)
 }
 
-export const searchUsers = async (activeId: number,page?:number,limit?:number,search?: string) => {
-   return search? await socialWebApi.get(`/users?filter=id||$ne||${activeId}&limit=${limit}&page=${page}&filter=firstName||$starts||${search}`) :
-   await socialWebApi.get(`/users?filter=id||$ne||${activeId}&limit=${limit}&page=${page}`)
+export const searchUsers = async (activeId: number,search?: string) => {
+   return search? await socialWebApi.get(`/users?filter=id||$ne||${activeId}&filter=firstName||$starts||${search}`) :
+   await socialWebApi.get(`/users?filter=id||$ne||${activeId}`)
 }
 
 export const addConversation = async (values: Record<string, any>) => {

@@ -8,7 +8,7 @@ import { getAuth } from '../../store/ducks/auth/selectors'
 import { addUserConversations, getUserConversations } from '../../store/ducks/dialogs/asyncActions'
 import { getConversationsLoading, getConversationsState } from '../../store/ducks/dialogs/selectors'
 import { getUsers } from '../../store/ducks/users/asyncActions'
-import { getUsersLimit, getUsersPage, getUsersState } from '../../store/ducks/users/selectors'
+import { getUsersState } from '../../store/ducks/users/selectors'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { IConversation, IUser } from '../../type/types'
 import MyButton from '../../UI/MyButton/MyButton'
@@ -28,17 +28,14 @@ const Messages: FC = () => {
   const [checkList, setCheckList] = useState<CheckboxValueType[]>([])
   const users = useAppSelector(getUsersState)
   const [visible, setVisible] = useState(false);
-  const page = useAppSelector(getUsersPage)
-  const limit = useAppSelector(getUsersLimit)
 
   const fetchConservations = async () => {
     dispatch(getUserConversations())
   }
-  console.log(dialogs)
   const onChangeSearch = async () => {
     if (activeUser?.id) {
       try {
-        dispatch(getUsers(activeUser,page,limit))
+        dispatch(getUsers(activeUser))
       }
       catch {
         console.log('error')
@@ -63,7 +60,6 @@ const Messages: FC = () => {
   }
 
   const handleCancel = () => {
-    console.log('Clicked cancel button');
     setVisible(false);
   };
 
@@ -98,7 +94,7 @@ const Messages: FC = () => {
                       itemLayout="horizontal"
                       dataSource={users}
                       size='large'
-                      renderItem={(item:IUser) => (
+                      renderItem={(item: IUser) => (
                         <List.Item
                         >
                           <div>
@@ -145,8 +141,8 @@ const Messages: FC = () => {
                     >
                       <Skeleton avatar title={false} loading={false} active >
                         <List.Item.Meta className={style.title}
-                          title={<NavLink to={`/messages/${item.id}`}>{item.id}</NavLink>}
-                          description={`${item.lastMessage}`}
+                          title={<NavLink to={`/messages/${item.id}`}>Participants:{item.participants?.map(name => <span><br></br>{name.firstName} {name.lastName}</span>)}</NavLink>}
+                          description={`${item.lastMessage.text}`}
                         />
                       </Skeleton>
                     </List.Item>

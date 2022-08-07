@@ -1,6 +1,5 @@
 import { Form, Input } from 'antd';
 import { FC } from 'react';
-import { signUp } from '../../API/socialWeb';
 import  { useNavigate } from 'react-router-dom'
 
 import style from './SignUp.module.css';

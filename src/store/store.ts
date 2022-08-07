@@ -1,11 +1,11 @@
-import { messagesReducer } from './ducks/messages/reducers';
+import thunk from 'redux-thunk';
 
+import { messagesReducer } from './ducks/messages/reducers';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { authReducer } from './ducks/auth/reducers';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { dialogsReducer } from './ducks/dialogs/reducers';
 import { postsReducer } from './ducks/posts/reducers';
-import thunk from 'redux-thunk';
 import { usersReducer } from './ducks/users/reducers';
 
 

@@ -17,6 +17,22 @@ export const getUserConversations = () => {
     }
 };
 
+
+export const addUserConversations = (values: Record<string, any>) => {
+  return async (dispatch: (arg0: { type: string; payload?: any }) => void) => {
+      try {
+          dispatch(setConversationsStarted(true))
+          const response = await addConversation(values)
+          dispatch(addConversations(response.data))
+      } catch (error) {
+          dispatch(setConversationsFailure(error))  
+      }
+      finally {
+          dispatch(setConversationsStarted(false))
+      }
+  }
+};
+
 const setConversationsStarted = (state:boolean) => ({
     type: SET_LOADING_CONVERSATIONS,
     payload: 
@@ -43,18 +59,3 @@ const setConversationsStarted = (state:boolean) => ({
     payload:
     conversation
   });
-
-  export const addUserConversations = (values: Record<string, any>) => {
-    return async (dispatch: (arg0: { type: string; payload?: any }) => void) => {
-        try {
-            dispatch(setConversationsStarted(true))
-            const response = await addConversation(values)
-            dispatch(addConversations(response.data))
-        } catch (error) {
-            dispatch(setConversationsFailure(error))  
-        }
-        finally {
-            dispatch(setConversationsStarted(false))
-        }
-    }
-};

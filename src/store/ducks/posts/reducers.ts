@@ -23,10 +23,10 @@ export const postsReducer = (state: PostsState = PostsInitialState, action: any)
       return { ...state, posts: state.posts?.concat(action.payload) }
     case DELETE_POST:
       return { ...state, posts: state.posts?.filter(p => p.id !== action.payload) }
-      case SET_LOADING_POSTS:
-        return {...state, isLoading: action.payload}
-        case POSTS_FAILURE:
-      return {...state, isLoading:false, error:action.payload.error}
+    case SET_LOADING_POSTS:
+      return { ...state, isLoading: action.payload }
+    case POSTS_FAILURE:
+      return { ...state, isLoading: false, error: action.payload.error }
     default:
       return state
   }

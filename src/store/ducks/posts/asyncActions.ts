@@ -1,13 +1,12 @@
 
 import { ADD_POST, POSTS_FAILURE, DELETE_POST, GET_POSTS, SET_LOADING_POSTS } from "./actions";
 import { getPosts, addPost, deletePost } from '../../../API/socialWeb';
-import { IUser } from '../../../type/types';
 
-export const getUserPosts = (user: IUser) => {
+export const getUserPosts = (id:number) => {
     return async (dispatch: (arg0: { type: string; payload?: any }) => void) => {
         try {
             dispatch(setPostsStarted(true))
-            const response = await getPosts(user.id)
+            const response = await getPosts(id)
             dispatch(setPostsSuccess(response.data))
         } catch (error) {
             dispatch(setPostsFailure(error))  
