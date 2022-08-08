@@ -23,3 +23,12 @@ export const getProfilePosts = (state: RootState) => {
 export const getLoadingPosts = (state: RootState) => {
     return state.users.isLoadingPosts
 }
+
+export const getLimitUsers = (state: RootState) => {
+    return state.users.limit
+}
+
+
+export const getLoadingMoreUsers = (state: RootState) => {
+    return state.users.isLoadingMoreUsers
+}

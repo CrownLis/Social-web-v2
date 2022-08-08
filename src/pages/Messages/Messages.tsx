@@ -34,7 +34,7 @@ const Messages: FC = () => {
   }
   const onChangeSearch = async () => {
     try {
-      dispatch(getUsers(activeUser.id))
+      dispatch(getUsers(activeUser.id,10))
     }
     catch {
       throw new Error("error");

@@ -1,13 +1,13 @@
 import { getPosts, getUser } from './../../../API/socialWeb';
 import { searchUsers, signUp } from '../../../API/socialWeb';
 import { IPost, IUser } from '../../../type/types';
-import { ADD_USER, GET_USERS, GET_USER_PROFILE, GET_USER_PROFILE_POSTS, SET_LOADING_USERS, SET_LOADING_USER_POSTS, SET_LOADING_USER_PROFILE, USERS_FAILURE } from './actions';
+import { ADD_USER, GET_USERS, GET_USER_PROFILE, GET_USER_PROFILE_POSTS, SET_LOADING_USERS, SET_LOADING_USER_POSTS, SET_LOADING_USER_PROFILE, USERS_FAILURE, SET_LIMIT_USERS, SET_LOADING_MORE_USERS } from './actions';
 
-export const getUsers = (id: number, search?: string) => {
+export const getUsers = (id: number, limit: number, search?: string) => {
   return async (dispatch: (arg0: { type: string; payload?: any }) => void) => {
     try {
       dispatch(getUsersStarted(true))
-      const response = await searchUsers(id, search)
+      const response = await searchUsers(id, limit, search)
       dispatch(getUsersSuccess(response.data))
     } catch (error) {
       dispatch(UsersFailure(error))
@@ -68,6 +68,23 @@ export const addNewUsers = (values: { avatar: any; }) => {
 };
 
 
+export const getMoreUsers = (id: number, limit: number, search?: string) => {
+  return async (dispatch: (arg0: { type: string; payload?: any; }) => any) => {
+    try {
+      dispatch(getMoreUsersStarted(true))
+      const response = await searchUsers(id, limit+10, search)
+      dispatch(setLimitUser())
+      dispatch(getUsersSuccess(response.data))
+    }
+    catch (error) {
+      dispatch(UsersFailure(error))
+    }
+    finally {
+      dispatch(getMoreUsersStarted(false))
+    }
+  }
+};
+
 const getUsersStarted = (state: boolean) => ({
   type: SET_LOADING_USERS,
   payload:
@@ -123,3 +140,13 @@ const addNewUser = (user: IUser) => ({
   payload:
     user
 });
+
+const setLimitUser = () => ({
+  type: SET_LIMIT_USERS
+})
+
+const getMoreUsersStarted = (state: boolean) => ({
+  type: SET_LOADING_MORE_USERS,
+  payload:
+    state
+})
