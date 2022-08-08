@@ -2,13 +2,14 @@
 
 import { Avatar, Checkbox, Form, List, Modal, Skeleton } from 'antd'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { FC, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { Virtuoso } from 'react-virtuoso'
 import { getAuth } from '../../store/ducks/auth/selectors'
 import { addUserConversations, getUserConversations } from '../../store/ducks/dialogs/asyncActions'
 import { getConversationsLoading, getConversationsState } from '../../store/ducks/dialogs/selectors'
-import { getUsers } from '../../store/ducks/users/asyncActions'
-import { getUsersState } from '../../store/ducks/users/selectors'
+import { getMoreUsers, getUsers } from '../../store/ducks/users/asyncActions'
+import { getLimitUsers, getLoadingMoreUsers, getUsersState } from '../../store/ducks/users/selectors'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { IConversation, IUser } from '../../type/types'
 import MyButton from '../../UI/MyButton/MyButton'
@@ -28,13 +29,25 @@ const Messages: FC = () => {
   const [checkList, setCheckList] = useState<CheckboxValueType[]>([])
   const users = useAppSelector(getUsersState)
   const [visible, setVisible] = useState(false);
+  const limit = useAppSelector(getLimitUsers)
+  const isLoadingMoreUsers = useAppSelector(getLoadingMoreUsers)
+
+  const loadMore = useCallback(() => {
+    if (limit <= 100) {
+      return setTimeout(() => {
+        dispatch(getMoreUsers(activeUser.id, limit))
+      }, 200)
+    } else {
+      return null
+    }
+  }, [dispatch(getMoreUsers)])
 
   const fetchConservations = async () => {
     dispatch(getUserConversations())
   }
-  const onChangeSearch = async () => {
+  const ChangeSearch = async () => {
     try {
-      dispatch(getUsers(activeUser.id,10))
+      dispatch(getUsers(activeUser.id, 10))
     }
     catch {
       throw new Error("error");
@@ -46,7 +59,7 @@ const Messages: FC = () => {
 
   const showModal = () => {
     setVisible(true);
-    onChangeSearch()
+    ChangeSearch()
   };
 
   const addDialog = async () => {
@@ -86,28 +99,27 @@ const Messages: FC = () => {
               >
                 <Form.Item>
                   <CheckboxGroup onChange={onChange} className={style.checkbox}>
-                    <List
-                      className="demo-loadmore-list"
-                      loading={isLoading}
-                      itemLayout="horizontal"
-                      dataSource={users}
-                      size='large'
-                      renderItem={(item: IUser) => (
-                        <List.Item
-                        >
-                          <div>
-                            <label htmlFor={`${item.id}`}>
-                              <List.Item.Meta className={style.title}
-                                avatar={<Avatar src={item.avatar} className={style.avatar} />}
-                                title={`${item.firstName} ${item.lastName}`}
-                              />
-                            </label>
+                  <Virtuoso
+                  style={{ height: 560 }}
+                  data={users}
+                  endReached={loadMore}
+                  overscan={200}
+                  itemContent={(index, user) => {
+                    return <List.Item><div>
+                      <label htmlFor={`${user.id}`}>
+                      <List.Item.Meta className={style.title}
+                        avatar={<Avatar src={user.avatar} className={style.avatar} />}
+                        title={`${user.firstName} ${user.lastName}`}
+                      />
+                      </label>
+                      </div>
+                      <div>
+                            <Checkbox value={user.id} id={`${user.id}`}>Add to group</Checkbox>
                           </div>
-                          <div>
-                            <Checkbox value={item.id} id={`${item.id}`}>Add to group</Checkbox>
-                          </div>
-                        </List.Item>)}
-                    />
+                          </List.Item>
+                  }}
+                  components={isLoadingMoreUsers ? { Footer } : {}}
+                />
                   </CheckboxGroup>
                 </Form.Item>
                 <Form.Item className={style.btn}>
@@ -159,3 +171,17 @@ const Messages: FC = () => {
 }
 
 export default Messages
+
+const Footer = () => {
+  return (
+    <div
+      style={{
+        padding: '2rem',
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
+      Loading...
+    </div>
+  )
+}

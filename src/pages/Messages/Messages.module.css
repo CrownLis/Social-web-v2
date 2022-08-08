@@ -5,8 +5,22 @@
 }
 
 .checkbox :global(.ant-list-item-meta) :global(.ant-list-item-meta-content) {
-    width:100%
+    width:100%;
 }
 .checkbox:global(.ant-checkbox-group) {
     width:100%;
 }
+
+:global(.ant-checkbox-group):global(.ant-form-item){
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    height:50px;
+ }
+
+ .title:global(.ant-list-item-meta) {
+    align-items: center;
+ }
+ 
