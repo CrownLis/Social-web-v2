@@ -1,6 +1,5 @@
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Avatar, List, Skeleton } from 'antd';
-import _ from 'lodash'
 
 import Loader from '../Loader/Loader';
 import { IUser } from '../../type/types';
@@ -35,7 +34,7 @@ const Users: FC = () => {
   const fetchUsers = () => {
     if (activeUser?.id) {
       try {
-        dispatch(getUsers(activeUser.id))
+        dispatch(getUsers(activeUser.id,search))
       }
       catch {
         console.log('error')
@@ -54,7 +53,7 @@ const Users: FC = () => {
     );
   }
 
-  useEffect(() => invokeDebounced(),[search]);
+  useEffect(() => invokeDebounced(), [search]);
 
   return (
     <div className={style.userList}>

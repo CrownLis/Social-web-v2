@@ -33,13 +33,11 @@ const Messages: FC = () => {
     dispatch(getUserConversations())
   }
   const onChangeSearch = async () => {
-    if (activeUser?.id) {
-      try {
-        dispatch(getUsers(activeUser))
-      }
-      catch {
-        console.log('error')
-      }
+    try {
+      dispatch(getUsers(activeUser.id))
+    }
+    catch {
+      throw new Error("error");
     }
   }
   const onChange = (list: CheckboxValueType[]) => {
@@ -142,7 +140,7 @@ const Messages: FC = () => {
                       <Skeleton avatar title={false} loading={false} active >
                         <List.Item.Meta className={style.title}
                           title={<NavLink to={`/messages/${item.id}`}>Participants:{item.participants?.map(name => <span><br></br>{name.firstName} {name.lastName}</span>)}</NavLink>}
-                          description={`${item.lastMessage.text}`}
+                          description={<span>{item.lastMessage ? item.lastMessage.text : ''}</span>}
                         />
                       </Skeleton>
                     </List.Item>

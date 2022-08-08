@@ -1,16 +1,15 @@
-import { FC, useEffect, useState } from 'react';
-import { IPost } from '../../type/types';
-import { getPosts } from '../../API/socialWeb';
+import { FC, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getUserProfile } from '../../store/ducks/users/asyncActions';
+import { getLoadingProfile, getUserProfiles } from '../../store/ducks/users/selectors';
 
 import UsersInfo from './Components/UsersInfo/UsersInfo';
 import Loader from '../Loader/Loader';
 import UserPosts from './Components/UserPosts/UserPosts';
 
 import style from './UserProfile.module.css';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { getUserProfile } from '../../store/ducks/users/asyncActions';
-import { getLoadingProfile, getUserProfiles, getUsersLoading } from '../../store/ducks/users/selectors';
+
 
 const UserProfile: FC = () => {
 

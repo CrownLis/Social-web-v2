@@ -4,6 +4,7 @@ import { TeamOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { getAuth, getAuthIsLoading } from './store/ducks/auth/selectors';
+import { checkAuth } from './store/ducks/auth/asyncActions';
 
 import MyHeader from './components/Header/MyHeader';
 import Profile from './pages/Profile/Profile';
@@ -19,7 +20,7 @@ import Dialog from './pages/Messages/Dialog/Dialog';
 import styles from './App.module.css';
 import 'antd/dist/antd.css';
 import './assets/styles/core.css';
-import { checkAuth } from './store/ducks/auth/asyncActions';
+
 
 
 

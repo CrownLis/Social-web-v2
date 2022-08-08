@@ -1,11 +1,11 @@
 /* eslint-disable eqeqeq */
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 
 import styles from './UserPosts.module.css';
 import { IPost } from '../../../../type/types';
 import UserPost from './UserPost/UserPost';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
-import { getLoadingPosts, getLoadingProfile, getProfilePosts, getUserProfiles } from '../../../../store/ducks/users/selectors';
+import { getLoadingPosts, getProfilePosts, getUserProfiles } from '../../../../store/ducks/users/selectors';
 import { getUserProfilePosts } from '../../../../store/ducks/users/asyncActions';
 
 

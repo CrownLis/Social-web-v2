@@ -53,26 +53,26 @@ const Dialog: FC = () => {
               <List
                 itemLayout="horizontal"
                 dataSource={messages}
-                renderItem={item => 
-                    <List.Item className={item.authorId !== activeUser?.id ? style.right : style.left}>
-                      <List.Item.Meta
-                        className={style.flexNone}
-                        avatar={<Avatar src={item.author.avatar} />}
-                        title={item.authorId === activeUser?.id ?
-                          <Dropdown overlay={<Menu className={style.delete}
-                            items={[
-                              {
-                                key: '1',
-                                label: (
-                                  <div onClick={() => removeMessage(item.id)}>delete</div>
-                                ),
-                              },
-                            ]}
-                          />}>
-                            <div>{item.text}</div>
-                          </Dropdown> : <div>{item.text}</div>}
-                      />
-                    </List.Item>
+                renderItem={item =>
+                  <List.Item className={item.authorId !== activeUser?.id ? style.right : style.left}>
+                    <List.Item.Meta
+                      className={style.flexNone}
+                      avatar={<Avatar src={item.author.avatar} />}
+                      title={item.authorId === activeUser?.id ?
+                        <Dropdown overlay={<Menu className={style.delete}
+                          items={[
+                            {
+                              key: '1',
+                              label: (
+                                <div onClick={() => removeMessage(item.id)}>delete</div>
+                              ),
+                            },
+                          ]}
+                        />}>
+                          <div>{item.text}</div>
+                        </Dropdown> : <div>{item.text}</div>}
+                    />
+                  </List.Item>
                 }
               />
             </div>

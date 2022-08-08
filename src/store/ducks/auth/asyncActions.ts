@@ -1,21 +1,21 @@
 import { authMe } from './../../../API/socialWeb';
 import { editUser, signIn } from "../../../API/socialWeb";
 import { IUser } from "../../../type/types";
-import { ACTIVE_USER_FAILURE, CHECK_ACTIVE_USER, SET_ACTIVE_USER, SET_LOADING_ACTIVE_USER, SET_LOADING_CHECK } from "./actions";
+import { ACTIVE_USER_FAILURE, SET_ACTIVE_USER, SET_LOADING_CHECK } from "./actions";
 
 
-export const setActiveUser = (values:{} | null) => {
+export const setActiveUser = (values: {} | null) => {
     return async (dispatch: (arg0: { type: string; payload?: any }) => void) => {
         try {
             dispatch(setActiveUserStarted(true))
             if (values !== null) {
-            const response = await signIn(values)
-            dispatch(setActiveUserSuccess(response.data.user))
+                const response = await signIn(values)
+                dispatch(setActiveUserSuccess(response.data.user))
             } else {
-              dispatch(setActiveUserSuccess(null))
+                dispatch(setActiveUserSuccess(null))
             }
         } catch (error) {
-            dispatch(activeUserFailure(error))  
+            dispatch(activeUserFailure(error))
         }
         finally {
             dispatch(setActiveUserStarted(false))
@@ -24,7 +24,7 @@ export const setActiveUser = (values:{} | null) => {
 };
 
 
-export const editActiveUser = (values:{}) => {
+export const editActiveUser = (values: {}) => {
     return async (dispatch: (arg0: { type: string; payload?: any }) => void) => {
         try {
             dispatch(setActiveUserStarted(true))
@@ -46,8 +46,8 @@ export const checkAuth = () => {
             const response = await authMe()
             dispatch(setActiveUserSuccess(response?.data))
         } catch (error) {
-            dispatch(activeUserFailure(error))  
-            setActiveUserSuccess(null)  
+            dispatch(activeUserFailure(error))
+            setActiveUserSuccess(null)
         }
         finally {
             dispatch(setIsAuthStarted(false))
@@ -55,28 +55,28 @@ export const checkAuth = () => {
     }
 };
 
-const setActiveUserStarted = (state:boolean) => ({
+const setActiveUserStarted = (state: boolean) => ({
     type: SET_LOADING_CHECK,
-    payload: 
+    payload:
         state
-  });
+});
 
-  const setIsAuthStarted = (state:boolean) => ({
+const setIsAuthStarted = (state: boolean) => ({
     type: SET_LOADING_CHECK,
-    payload: 
+    payload:
         state
-  });
+});
 
 
-  const activeUserFailure = (error: any) => ({
+const activeUserFailure = (error: any) => ({
     type: ACTIVE_USER_FAILURE,
     payload: {
-      error
+        error
     }
-  });
+});
 
-  const setActiveUserSuccess = (user:IUser | null) => ({
+const setActiveUserSuccess = (user: IUser | null) => ({
     type: SET_ACTIVE_USER,
-    payload: 
-    user
-  });
+    payload:
+        user
+});
