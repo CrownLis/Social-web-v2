@@ -1,34 +1,32 @@
-import { FC, useEffect, useState } from 'react';
-import { IPost, IUser } from '../../type/types';
-import { getPosts, getUser } from '../../API/socialWeb';
+import { FC, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getUserProfile } from '../../store/ducks/users/asyncActions';
+import { getLoadingProfile, getUserProfiles } from '../../store/ducks/users/selectors';
 
-import UsersInfo from './UsersInfo/UsersInfo';
+import UsersInfo from './Components/UsersInfo/UsersInfo';
 import Loader from '../Loader/Loader';
-import UserPosts from './UserPosts/UserPosts';
+import UserPosts from './Components/UserPosts/UserPosts';
 
 import style from './UserProfile.module.css';
 
+
 const UserProfile: FC = () => {
+
   const { id } = useParams()
+  const dispatch = useAppDispatch()
+  const isLoading = useAppSelector(getLoadingProfile)
+  const user = useAppSelector(getUserProfiles)
 
-  const [posts, setPosts] = useState<IPost[]>([]);
-  const [user, setUser] = useState<IUser>()
-  const [isLoading, setIsLoading] = useState(true);
-
-  const fetchUser = async (userId: string) => {
-    setIsLoading(true);
-    const activeUser = await getUser(userId);
-    setUser(activeUser.data);
-    const postList = await getPosts(userId);
-    setPosts(postList.data);
-    setIsLoading(false);
+  const fetchUser = async () => {
+    if (id) {
+      dispatch(getUserProfile(id))
+    }
   }
 
   useEffect(() => {
-    if (id) { fetchUser(id) };
-  }, [id]);
-
+    fetchUser()
+  }, []);
 
   return (
     <div className={style.container}>
@@ -44,7 +42,7 @@ const UserProfile: FC = () => {
             <UsersInfo firstName={user.firstName} lastName={user.lastName} email={user.email} avatar={user.avatar} id={user.id} />
             : null}
           <div className={style.posts}>
-            <UserPosts posts={posts} />
+            <UserPosts />
           </div>
         </div>
       )}

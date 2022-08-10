@@ -1,0 +1,99 @@
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.dialog {
+    height: 550px;
+    overflow: auto;
+    padding: 10px 16px;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.right .flexNone:global(.ant-list-item-meta){
+    flex-direction: row-reverse;
+}
+
+:global(.ant-list-split .ant-list-item).right {
+    justify-content: right;
+}
+
+.flexNone:global(.ant-list-item-meta){
+    flex:none
+}
+
+.flexNone:global(.ant-list-item-meta) :global(.ant-list-item-meta-content) {
+    width: inherit;
+    overflow-wrap:anywhere;
+}
+
+.left {
+    justify-content: start;
+}
+
+.right {
+    justify-content: end;
+}
+
+.padding {
+    padding: 5px;
+}
+
+.padding :global(.ant-list-item-meta-title) {
+    overflow-wrap: break-word;
+}
+
+.input {
+    height: 400px;
+    max-height: 100px;
+    padding: 5px;
+}
+
+.input :global(.ant-form.ant-form-horizontal) {
+    display: grid;
+   grid-template-columns: 80% 20%;
+}
+
+.input :global(.ant-form.ant-form-horizontal) textarea {
+    width: 100%;
+    font-size: 14px;
+    border:2px solid rgb(82, 50, 92);
+    border-radius:10px;
+    resize: none;
+    max-height: 100px;
+}
+
+.input :global(.ant-btn-round.ant-btn-lg) {
+    margin:10px;
+    padding:2px 30px;
+    height: 34px;
+    border-radius: 10px;
+    border:2px solid rgb(82, 50, 92);
+}
+
+#components-dropdown-demo-arrow .ant-btn {
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+  .ant-row-rtl #components-dropdown-demo-arrow .ant-btn {
+    margin-right: 0;
+    margin-bottom: 8px;
+    margin-left: 8px;
+  }
+
+  .delete :global(.ant-dropdown-menu-title-content) {
+    max-width: 100px;
+  }
+  
+  :global(.ant-dropdown-menu) {
+    width: 100px;
+  }
+
+  :global(.ant-dropdown) {
+    min-width: none;
+  }

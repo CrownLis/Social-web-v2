@@ -10,6 +10,12 @@
 h2 {
    padding-left: 20px;
 }
+
+.title {
+   height:90px;
+   border-bottom: 1px solid purple;
+}
+
 .userList {
    width: 100%;
 display: flex;
@@ -37,4 +43,7 @@ flex-direction: column;
 .inputContainer {
    display:flex;
    justify-content: center;
+}
+:global(.ant-list) {
+   height: 570px; overflow: auto; padding: 0px 16px;
 }

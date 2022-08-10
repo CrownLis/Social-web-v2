@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import style from './User.module.css';
 
 interface UserProps {
