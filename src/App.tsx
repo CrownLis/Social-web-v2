@@ -123,7 +123,7 @@ const App: FC = () => {
         </Layout>
       </div>
     </BrowserRouter>
-  );
-};
+  )
+}
 
 export default App;

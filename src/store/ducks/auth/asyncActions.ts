@@ -42,7 +42,7 @@ export const editActiveUser = (values: {}) => {
 export const checkAuth = () => {
     return async (dispatch: (arg0: { type: string; payload?: any }) => void) => {
         try {
-            dispatch(setIsAuthStarted(false))
+            dispatch(setIsAuthStarted(true))
             const response = await authMe()
             dispatch(setActiveUserSuccess(response?.data))
         } catch (error) {

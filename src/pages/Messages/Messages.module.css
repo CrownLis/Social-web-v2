@@ -16,11 +16,3 @@
     flex-direction: column;
 }
 
-.title {
-    height:50px;
- }
-
- .title:global(.ant-list-item-meta) {
-    align-items: center;
- }
- 
